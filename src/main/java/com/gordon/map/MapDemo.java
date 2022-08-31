@@ -20,13 +20,14 @@ public class MapDemo {
         }
         return map.isEmpty();
     }
+
     public boolean isAnagram2(String s, String t) {
-        if (s.length()!=t.length()) {
+        if (s.length() != t.length()) {
             return false;
         }
         int[] dict = new int[26];
         for (char c : s.toCharArray()) {
-            dict[c-'a']++;
+            dict[c - 'a']++;
         }
         for (char c : t.toCharArray()) {
             dict[c - 'a']--;
@@ -137,15 +138,15 @@ public class MapDemo {
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            int left = i+1;
-            int right = nums.length-1;
+            int left = i + 1;
+            int right = nums.length - 1;
             while (left < right) {
                 int sum = nums[i] + nums[left] + nums[right];
                 if (sum > 0) {
                     right--;
                 } else if (sum < 0) {
                     left++;
-                }else {
+                } else {
                     result.add(Arrays.asList(nums[i], nums[left], nums[right]));
                     while (left < right && nums[right] == nums[right - 1]) {
                         right--;
@@ -155,6 +156,90 @@ public class MapDemo {
                     }
                     left++;
                     right--;
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0 && nums[i] > target) {
+                return result;
+            }
+            if (i > 0 && nums[i - 1] == nums[i]) {
+                continue;
+            }
+            for (int j = i + 1; j < nums.length; j++) {
+                if (j > i + 1 && nums[j - 1] == nums[j]) {
+                    continue;
+                }
+                int left = j + 1;
+                int right = nums.length - 1;
+                while (left < right) {
+                    int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum > target) {
+                        right--;
+                    } else if (sum < target) {
+                        left++;
+                    } else {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        while (left < right && nums[right - 1] == nums[right]) {
+                            right--;
+                        }
+                        while (left < right && nums[left + 1] == nums[left]) {
+                            left++;
+                        }
+                        left++;
+                        right--;
+                    }
+                }
+            }
+
+        }
+        return result;
+    }
+
+    public List<List<Integer>> fourSum2(int[] nums, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length; i++) {
+
+            // nums[i] > target 直接返回, 剪枝操作
+            if (nums[i] > 0 && nums[i] > target) {
+                return result;
+            }
+
+            if (i > 0 && nums[i - 1] == nums[i]) {
+                continue;
+            }
+
+            for (int j = i + 1; j < nums.length; j++) {
+
+                if (j > i + 1 && nums[j - 1] == nums[j]) {
+                    continue;
+                }
+
+                int left = j + 1;
+                int right = nums.length - 1;
+                while (right > left) {
+                    long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum > target) {
+                        right--;
+                    } else if (sum < target) {
+                        left++;
+                    } else {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+
+                        while (right > left && nums[right] == nums[right - 1]) right--;
+                        while (right > left && nums[left] == nums[left + 1]) left++;
+
+                        left++;
+                        right--;
+                    }
                 }
             }
         }
