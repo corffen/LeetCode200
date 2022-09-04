@@ -94,7 +94,7 @@ public class StringDemo {
         }
     }
 
-    //�滻�ַ����еĿո�
+    //�滻�ַ����еĿո�
     public String replaceSpace(String s) {
         if (s == null || s.length() == 0) {
             return s;
@@ -134,5 +134,42 @@ public class StringDemo {
         return sb.reverse().toString();
     }
 
+    /**
+     * kmp算法求 子字符串所在的位置
+     *
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public int strStr(String haystack, String needle) {
+        int[] next = new int[needle.length()];
+        getNext(next, needle);
+        int j = -1;
+        for (int i = 0; i < haystack.length(); i++) {
+            while (j >= 0 && haystack.charAt(i) != needle.charAt(j + 1)) {
+                j = next[j];
+            }
+            if (haystack.charAt(i) == needle.charAt(j + 1)) {
+                j++;
+            }
+            if (j + 1 == needle.length()) {
+                return i - needle.length() + 1;
+            }
+        }
+        return -1;
+    }
 
+    private void getNext(int[] next, String s) {
+        int j = -1;
+        next[0] = -1;
+        for (int i = 1; i < s.length(); i++) {
+            while (j >= 0 && s.charAt(i) != s.charAt(j + 1)) {
+                j = next[j];
+            }
+            if (s.charAt(i) == s.charAt(j + 1)) {
+                j++;
+            }
+            next[i] = j;
+        }
+    }
 }
