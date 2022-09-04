@@ -172,4 +172,13 @@ public class StringDemo {
             next[i] = j;
         }
     }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public boolean repeatedSubstringPattern(String s) {
+        return (s + s).indexOf(s, 1) != s.length();
+    }
 }
