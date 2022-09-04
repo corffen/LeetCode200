@@ -94,7 +94,6 @@ public class StringDemo {
         }
     }
 
-    //�滻�ַ����еĿո�
     public String replaceSpace(String s) {
         if (s == null || s.length() == 0) {
             return s;
