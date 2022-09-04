@@ -1,5 +1,9 @@
 package com.gordon.string;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class StringDemo {
 
     public void reverseString(char[] s) {
@@ -32,7 +36,65 @@ public class StringDemo {
         return new String(charArray);
     }
 
-    //替换字符串中的空格
+    public String reverseWords2(String s) {
+        s = s.trim();
+        List<String> list = Arrays.asList(s.split(" "));
+        Collections.reverse(list);
+        return String.join(" ", list);
+    }
+
+    public String reverseWords(String s) {
+        StringBuilder sb = removeSpace(s);
+        reverse(sb, 0, sb.length() - 1);
+        reverseEach(sb);
+        return sb.toString();
+    }
+
+    private StringBuilder removeSpace(String s) {
+        int start = 0;
+        int end = s.length() - 1;
+        while (s.charAt(start) == ' ') {
+            start++;
+        }
+        while (s.charAt(end) == ' ') {
+            end--;
+        }
+        StringBuilder sb = new StringBuilder();
+        while (start <= end) {
+            char c = s.charAt(start);
+            if (c != ' ' || sb.charAt(sb.length() - 1) != ' ') {
+                sb.append(c);
+            }
+            start++;
+        }
+        return sb;
+    }
+
+    private void reverse(StringBuilder sb, int start, int end) {
+        while (start < end) {
+            char temp = sb.charAt(start);
+            sb.setCharAt(start, sb.charAt(end));
+            sb.setCharAt(end, temp);
+            start++;
+            end--;
+        }
+    }
+
+    private void reverseEach(StringBuilder sb) {
+        int start = 0;
+        int end = 1;
+        int n = sb.length();
+        while (start < n) {
+            while (end < n && sb.charAt(end) != ' ') {
+                end++;
+            }
+            reverse(sb, start, end - 1);
+            start = end + 1;
+            end = start + 1;
+        }
+    }
+
+    //�滻�ַ����еĿո�
     public String replaceSpace(String s) {
         if (s == null || s.length() == 0) {
             return s;
@@ -63,4 +125,14 @@ public class StringDemo {
         }
         return new String(chars);
     }
+
+    public String reverseLeftWords(String s, int n) {
+        int len = s.length();
+        StringBuilder sb = new StringBuilder(s);
+        reverse(sb, 0, n - 1);
+        reverse(sb, n, len - 1);
+        return sb.reverse().toString();
+    }
+
+
 }
