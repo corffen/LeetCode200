@@ -1,10 +1,13 @@
 package com.gordon.twopoints;
 
+import com.gordon.listnode.ListNode;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class TwoPointDemo {
 
-    public static void main(String[] args) {
-
-    }
 
     public int removeElement(int[] nums, int val) {
         int slow = 0;
@@ -60,5 +63,136 @@ public class TwoPointDemo {
             right--;
         }
         return new String(chars);
+    }
+
+
+    /**
+     * 1. 去除两边的空格,单词中间的空格保持一个
+     * 2. 翻转整个字符串 用双指针
+     * 3. 翻转每个单词  用双指针(start从0开始,end指向空格 然后start=end+1,end=start+1,然后计算end的下一次位置)
+     *
+     * @param s
+     * @return
+     */
+    public String reverseWords(String s) {
+        List<String> stringList = Arrays.asList(s.trim().split("\\s+"));
+        Collections.reverse(stringList);
+        return String.join(" ", stringList);
+    }
+
+    public void reverseWords2(String s) {
+        StringBuilder sb = removeSpace(s);
+        StringBuilder reverse = sb.reverse();
+        reverseEach(reverse);
+    }
+
+    private StringBuilder removeSpace(String s) {
+        int start = 0;
+        int end = s.length() - 1;
+        while (s.charAt(start) == ' ') {
+            start++;
+        }
+        while (s.charAt(end) == ' ') {
+            end--;
+        }
+        StringBuilder sb = new StringBuilder();
+        while (start <= end) {
+            char c = s.charAt(start);
+            if (c != ' ' || sb.charAt(sb.length() - 1) != ' ') {
+                sb.append(c);
+            }
+            start++;
+        }
+        return sb;
+    }
+
+    private void reverseString(StringBuilder sb, int start, int end) {
+        while (start <= end) {
+            char temp = sb.charAt(start);
+            sb.setCharAt(start, sb.charAt(end));
+            sb.setCharAt(end, temp);
+            start++;
+            end--;
+        }
+    }
+
+    private void reverseEach(StringBuilder sb) {
+        int start = 0;
+        int end = 1;
+        int n = sb.length();
+        while (start < n) {
+            while (end < n && sb.charAt(end) != ' ') {
+                end++;
+            }
+            reverseString(sb, start, end - 1);
+            start = end + 1;
+            end = start + 1;
+        }
+    }
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode fast = head;
+        while (n-- > 0) {
+            fast = fast.next;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode slow = dummy;
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode fast = headA;
+        ListNode slow = headB;
+        int aSize = 0;
+        int bSize = 0;
+        while (fast != null) {
+            fast = fast.next;
+            aSize++;
+        }
+        while (slow != null) {
+            slow = slow.next;
+            bSize++;
+        }
+        if (aSize < bSize) {
+            return getIntersectionNode(headB, headB);
+        }
+        int distance = aSize - bSize;
+        fast = headA;
+        slow = headB;
+        while (distance-- > 0) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            if (fast == slow) {
+                return slow;
+            }
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return null;
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                slow = head;
+                while (fast != slow) {
+                    fast = fast.next;
+                    slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
     }
 }
