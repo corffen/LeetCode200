@@ -38,7 +38,7 @@ public class StringDemo {
 
     public String reverseWords2(String s) {
         s = s.trim();
-        List<String> list = Arrays.asList(s.split(" "));
+        List<String> list = Arrays.asList(s.split("\\s+"));
         Collections.reverse(list);
         return String.join(" ", list);
     }
