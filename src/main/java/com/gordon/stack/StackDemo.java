@@ -1,6 +1,6 @@
 package com.gordon.stack;
 
-import java.util.ArrayDeque;
+import java.util.*;
 
 public class StackDemo {
     public boolean isValid(String s) {
@@ -87,6 +87,45 @@ public class StackDemo {
             if (i >= k - 1) {
                 result[idx++] = nums[queue.peek()];
             }
+        }
+        return result;
+    }
+
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((p1, p2) -> p2[1] - p1[1]);
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            pq.add(new int[]{entry.getKey(), entry.getValue()});
+        }
+        int[] result = new int[k];
+        for (int i = 0; i < k; i++) {
+            result[i] = pq.poll()[0];
+        }
+        return result;
+    }
+
+    public int[] topKFrequent2(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(p -> p[1]));
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (pq.size() < k) {
+                pq.add(new int[]{entry.getKey(), entry.getValue()});
+            } else {
+                if (pq.peek()[1] < entry.getValue()) {
+                    pq.poll();
+                    pq.add(new int[]{entry.getKey(), entry.getValue()});
+                }
+            }
+        }
+        int[] result = new int[k];
+        for (int i = k-1; i >= 0; i--) {
+            result[i] = pq.poll()[0];
         }
         return result;
     }
