@@ -29,7 +29,6 @@ public class BinaryTreeDemo {
     }
 
 
-
     public List<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         postorder(root, result);
@@ -50,7 +49,6 @@ public class BinaryTreeDemo {
         postorder(root.right, result);
         result.add(root.val);
     }
-
 
 
     public List<Integer> inorderTraversal(TreeNode root) {
@@ -121,6 +119,15 @@ public class BinaryTreeDemo {
         return result;
     }
 
+    /**
+     * 后序遍历 应该是左-->右-->中
+     * 前序遍历是 中-->左-->右
+     * 所以对前序遍历调整顺序为 中-->右-->左
+     * 然后再反转上面的顺序,就是后续遍历
+     *
+     * @param root
+     * @return
+     */
     public List<Integer> postorderTraversal2(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if (root == null) {
@@ -142,4 +149,65 @@ public class BinaryTreeDemo {
         Collections.reverse(result);
         return result;
     }
+
+    /**
+     * 层级遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        levelTraversal(root, result);
+        return result;
+    }
+
+    private void levelTraversal(TreeNode root, List<List<Integer>> result) {
+        if (root == null) {
+            return;
+        }
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            int size = queue.size();
+            while (size-- > 0) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            result.add(level);
+        }
+    }
+
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        levelTraversal(root, result);
+        Collections.reverse(result);
+        return result;
+    }
+
+//    public List<Integer> rightSideView(TreeNode root) {
+//
+//    }
+//
+//    private void levelTraversal(TreeNode root, List<Integer> result){
+//        if (root == null) {
+//            return;
+//        }
+//        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+//        queue.offer(root);
+//        while (!queue.isEmpty()){
+//            TreeNode node = queue.poll();
+//            result.add(node.val);
+//            if (node.right != null) {
+//                queue.offer(node.right);
+//            }
+//        }
+//    }
 }
