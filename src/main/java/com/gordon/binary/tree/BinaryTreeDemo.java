@@ -1,9 +1,6 @@
 package com.gordon.binary.tree;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class BinaryTreeDemo {
 
@@ -192,22 +189,54 @@ public class BinaryTreeDemo {
         return result;
     }
 
-//    public List<Integer> rightSideView(TreeNode root) {
-//
-//    }
-//
-//    private void levelTraversal(TreeNode root, List<Integer> result){
-//        if (root == null) {
-//            return;
-//        }
-//        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
-//        queue.offer(root);
-//        while (!queue.isEmpty()){
-//            TreeNode node = queue.poll();
-//            result.add(node.val);
-//            if (node.right != null) {
-//                queue.offer(node.right);
-//            }
-//        }
-//    }
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> nodeQueue = new ArrayDeque<>();
+        nodeQueue.add(root);
+        while (!nodeQueue.isEmpty()) {
+            int size = nodeQueue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = nodeQueue.poll();
+                if (node.left != null) {
+                    nodeQueue.add(node.left);
+                }
+                if (node.right != null) {
+                    nodeQueue.add(node.right);
+                }
+                if (i == size - 1) {
+                    result.add(node.val);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> nodeQueue = new ArrayDeque<>();
+        nodeQueue.add(root);
+        while (!nodeQueue.isEmpty()) {
+            int size = nodeQueue.size();
+            double sum = 0.0;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = nodeQueue.poll();
+                sum += node.val;
+                if (node.left != null) {
+                    nodeQueue.add(node.left);
+                }
+                if (node.right != null) {
+                    nodeQueue.add(node.right);
+                }
+            }
+            result.add(sum / size);
+        }
+        return result;
+    }
+
 }
