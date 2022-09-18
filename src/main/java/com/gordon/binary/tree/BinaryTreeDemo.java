@@ -239,4 +239,33 @@ public class BinaryTreeDemo {
         return result;
     }
 
+    /**
+     * n叉树的层级遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        ArrayDeque<Node> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            ArrayList<Integer> level = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                level.add(node.val);
+                for (Node child : node.children) {
+                    if (child != null) {
+                        queue.add(child);
+                    }
+                }
+            }
+            result.add(level);
+        }
+        return result;
+    }
 }
