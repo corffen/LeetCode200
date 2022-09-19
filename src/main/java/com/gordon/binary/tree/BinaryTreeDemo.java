@@ -268,4 +268,111 @@ public class BinaryTreeDemo {
         }
         return result;
     }
+
+    /**
+     * 每个层级中的最大值
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> nodeQueue = new ArrayDeque<>();
+        nodeQueue.add(root);
+        while (!nodeQueue.isEmpty()) {
+            int size = nodeQueue.size();
+            int max = Integer.MIN_VALUE;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = nodeQueue.poll();
+                max = Math.max(max, node.val);
+                if (node.left != null) {
+                    nodeQueue.add(node.left);
+                }
+                if (node.right != null) {
+                    nodeQueue.add(node.right);
+                }
+            }
+            result.add(max);
+        }
+        return result;
+    }
+
+    /**
+     * 翻转二叉树
+     *
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+        swapTreeNode(root);
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
+    }
+
+    private void swapTreeNode(TreeNode node) {
+        TreeNode temp = node.left;
+        node.left = node.right;
+        node.right = temp;
+    }
+
+    public TreeNode invertTree2(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                swapTreeNode(node);
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+        return root;
+    }
+
+    /**
+     * 对称二叉树
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return false;
+        }
+        return isSymmetric(root.left, root.right);
+    }
+
+    /**
+     * 使用递归解法:
+     * 1. 确认入参和出参
+     * 2. 确定递归的出口
+     * 3. 缩小调用的范围(递归入参,将问题划分小一点)
+     * 4. 确认循环都成立
+     * @param left
+     * @param right
+     * @return
+     */
+    private boolean isSymmetric(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        } else if (left == null || right == null || left.val != right.val) {
+            return false;
+        }else {
+            return isSymmetric(left.left, right.right) && isSymmetric(left.right, right.left);
+        }
+    }
 }
