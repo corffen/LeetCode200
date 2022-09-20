@@ -346,6 +346,7 @@ public class BinaryTreeDemo {
 
     /**
      * 对称二叉树
+     *
      * @param root
      * @return
      */
@@ -362,6 +363,7 @@ public class BinaryTreeDemo {
      * 2. 确定递归的出口
      * 3. 缩小调用的范围(递归入参,将问题划分小一点)
      * 4. 确认循环都成立
+     *
      * @param left
      * @param right
      * @return
@@ -371,8 +373,30 @@ public class BinaryTreeDemo {
             return true;
         } else if (left == null || right == null || left.val != right.val) {
             return false;
-        }else {
+        } else {
             return isSymmetric(left.left, right.right) && isSymmetric(left.right, right.left);
         }
+    }
+
+    public boolean isSymmetric2(TreeNode root) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offerFirst(root.left);
+        deque.offerLast(root.right);
+        while (!deque.isEmpty()) {
+            TreeNode leftNode = deque.pollFirst();
+            TreeNode rightNode = deque.pollLast();
+            if (leftNode == null && rightNode == null) {
+                continue;
+            }
+            // 以上三个判断条件合并
+            if (leftNode == null || rightNode == null || leftNode.val != rightNode.val) {
+                return false;
+            }
+            deque.offerFirst(leftNode.right);
+            deque.offerFirst(leftNode.left);
+            deque.offerLast(rightNode.left);
+            deque.offerLast(rightNode.right);
+        }
+        return true;
     }
 }
