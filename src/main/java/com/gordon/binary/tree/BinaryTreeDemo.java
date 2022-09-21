@@ -408,6 +408,7 @@ public class BinaryTreeDemo {
         int rightHeight = maxDepth(root.right);
         return Math.max(leftHeight, rightHeight) + 1;
     }
+
     public int maxDepth2(TreeNode root) {
         if (root == null) {
             return 0;
@@ -420,6 +421,51 @@ public class BinaryTreeDemo {
             depth++;
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+        return depth;
+    }
+
+    public int minDepth(TreeNode root) {
+        return getDepth(root);
+    }
+
+    private int getDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = getDepth(root.left);
+        int rightHeight = getDepth(root.right);
+        if (root.left == null && root.right != null) {
+            return rightHeight + 1;
+        }
+        if (root.right == null && root.left != null) {
+            return leftHeight + 1;
+        }
+        return Math.min(leftHeight, rightHeight) + 1;
+    }
+
+    public int minDepth2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        int depth = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            depth++;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    return depth;
+                }
                 if (node.left != null) {
                     queue.add(node.left);
                 }
