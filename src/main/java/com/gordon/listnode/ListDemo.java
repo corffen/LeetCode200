@@ -42,6 +42,26 @@ public class ListDemo {
     }
 
     /**
+     * 做的第二遍,只是高频考点,联系一下
+     * 遍历当前节点,不断的指向下一个节点为pre
+     * 最终返回pre即可.
+     * @param head
+     * @return
+     */
+    public ListNode reverseList2(ListNode head) {
+        ListNode cur = head;
+        ListNode pre = null;
+        ListNode temp = null;
+        while (cur != null) {
+            temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
+    }
+
+    /**
      * 两两交换
      *
      * @param head

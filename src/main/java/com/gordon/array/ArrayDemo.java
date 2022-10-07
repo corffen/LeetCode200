@@ -1,5 +1,6 @@
 package com.gordon.array;
 
+
 public class ArrayDemo {
     public static void main(String[] args) {
         ArrayDemo demo = new ArrayDemo();
@@ -71,7 +72,12 @@ public class ArrayDemo {
         return result;
     }
 
-    //长度最小的子数组 滑动窗口
+    /**
+     * 给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的 连续 子数组，并返回其长度。
+     * 如果不存在符合条件的子数组，返回 0。
+     *
+     * @return
+     */
     public int minSubArrayLen(int s, int[] nums) {
         int left = 0;
         int sum = 0;
@@ -125,4 +131,30 @@ public class ArrayDemo {
         return res;
     }
 
+    public int[][] generateMatrix2(int n) {
+        int loop = 0;
+        int start = 0;
+        int count = 1;
+        int i, j;
+        int[][] res = new int[n][n];
+        while (loop++ < n / 2) {
+            for (j = start; j < n - loop; j++) {
+                res[start][j] = count++;
+            }
+            for (i = start; i < n - loop; i++) {
+                res[i][j] = count++;
+            }
+            for (; j >= loop; j--) {
+                res[i][j] = count++;
+            }
+            for (; i >= loop; i--) {
+                res[i][j] = count++;
+            }
+            start++;
+        }
+        if (start % 2 == 1) {
+            res[start][start] = count;
+        }
+        return res;
+    }
 }

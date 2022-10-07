@@ -51,9 +51,17 @@ public class MapDemo {
                 result.add(i);
             }
         }
-        return result.stream().mapToInt(x -> x).toArray();
+        return result.stream().mapToInt(Integer::intValue).toArray();
     }
 
+    /**
+     * 「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，
+     * 也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。
+     *
+     * 如果 n 是快乐数就返回 True ；不是，则返回 False 。
+     * @param n
+     * @return
+     */
     public boolean isHappy(int n) {
         HashSet<Integer> set = new HashSet<>();
         while (n != 1 && !set.contains(n)) {
@@ -87,6 +95,9 @@ public class MapDemo {
         return new int[2];
     }
 
+    /**
+     * 统计四数之和为0的个数
+     */
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
         HashMap<Integer, Integer> map = new HashMap<>();
         int temp;
@@ -112,6 +123,12 @@ public class MapDemo {
         return result;
     }
 
+    /**
+     * 判断第一个字符串是否能由第二字字符串里面的字符组成
+     * @param ransomNote
+     * @param magazine
+     * @return
+     */
     public boolean canConstruct(String ransomNote, String magazine) {
         int[] map = new int[26];
         for (char c : magazine.toCharArray()) {
