@@ -1,13 +1,11 @@
 package com.gordon.string;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class StringDemo {
     /**
      * 利用双指针,收尾交换元素即可
+     *
      * @param s
      */
     public void reverseString(char[] s) {
@@ -49,6 +47,7 @@ public class StringDemo {
 
     /**
      * 反转字符串中的单词,按空格分隔,然后反转添加上空格
+     *
      * @param s
      * @return
      */
@@ -68,6 +67,7 @@ public class StringDemo {
 
     /**
      * 去除两边的空格,然后单词中间的空格,只保留一个
+     *
      * @param s
      * @return
      */
@@ -106,6 +106,7 @@ public class StringDemo {
 
     /**
      * 反转StringBuilder中的每一个单词
+     *
      * @param sb
      */
     private void reverseEach(StringBuilder sb) {
@@ -160,6 +161,11 @@ public class StringDemo {
         return new String(chars);
     }
 
+    /**
+     * 翻转前半部分
+     * 翻转后半部分
+     * 翻转整体
+     */
     public String reverseLeftWords(String s, int n) {
         int len = s.length();
         StringBuilder sb = new StringBuilder(s);
@@ -168,11 +174,32 @@ public class StringDemo {
         return sb.reverse().toString();
     }
 
+    public String reverseLeftWords2(String s, int n) {
+        ArrayDeque<Character> deque = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
+            deque.add(c);
+        }
+        while (n-- > 0) {
+            Character first = deque.pollFirst();
+            deque.add(first);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Character c : deque) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
     /**
      * kmp算法求 子字符串所在的位置
-     *
-     * @param haystack
-     * @param needle
+     * 1. 利用模式字符串,求出next数组,表示最长的前后缀的公共长度
+     * 2. 匹配时,用i指向文本字符串的位置,不会回退该指针
+     * 3. 逐个与模式字符串的第j+1个字符进行比较
+     *      注意:第j+1个字符,表示的模式字符串中要与文本第i个字符进行比较的元素
+     *      如果匹配成功,就移动j
+     *      如果匹配不成功,就从next数组中,找到当前字符对应的位置j
+     * @param haystack 文本字符串
+     * @param needle 模式字符串
      * @return
      */
     public int strStr(String haystack, String needle) {
