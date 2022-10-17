@@ -1,6 +1,5 @@
 package com.gordon.binary.tree;
 
-import java.awt.image.renderable.RenderableImage;
 import java.util.*;
 
 public class BinaryTreeDemo2 {
@@ -14,14 +13,22 @@ public class BinaryTreeDemo2 {
         if (root == null) {
             return 0;
         }
-        int leftDepth = getDepth(root.left);
-        int rightDepth = getDepth(root.right);
-        if (leftDepth == rightDepth) {// 左子树是满二叉树
-            // 2^leftDepth其实是 （2^leftDepth - 1） + 1 ，左子树 + 根结点
-            return (1 << leftDepth) + countNodes(root.right);
-        } else {// 右子树是满二叉树
-            return (1 << rightDepth) + countNodes(root.left);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        int leftHeight = 0;
+        int rightHeight = 0;
+        while (left != null) {
+            left = left.left;
+            leftHeight++;
         }
+        while (right != null) {
+            right = right.right;
+            rightHeight++;
+        }
+        if (leftHeight == rightHeight) {
+            return (2 << leftHeight) -1;
+        }
+        return countNodes(root.left) + countNodes(root.right) + 1;
     }
 
     private int getDepth(TreeNode root) {
@@ -86,6 +93,9 @@ public class BinaryTreeDemo2 {
             result.add(sb.toString());
             return;
         }
+        //注意回溯与递归是一一对应的,回溯就是回到上一步
+        //叶子结点处理完,就要回溯到上一个节点,这里要删除最后一个添加的路径节点,也就是叶子结点
+        //然后递归执行其他逻辑
         if (currentNode.left != null) {
             getTreePaths(currentNode.left, result, paths);
             paths.remove(paths.size() - 1);
@@ -103,6 +113,8 @@ public class BinaryTreeDemo2 {
         int left = sumOfLeftLeaves(root.left);
         int right = sumOfLeftLeaves(root.right);
         int mid = 0;
+        //当前节点的左孩子是叶子结点,就记录左叶子结点的值
+        //其他情况,mid都是0
         if (root.left != null && root.left.left == null && root.left.right == null) {
             mid = root.left.val;
         }
@@ -169,6 +181,9 @@ public class BinaryTreeDemo2 {
 
     private void getBottomValue(TreeNode root, int depth) {
         if (root.left == null && root.right == null) {
+            /**
+             * 只要层级够深,每次更新时,都是左叶子节点
+             */
             if (depth > maxDepth) {
                 result = root.val;
                 maxDepth = depth;
@@ -176,6 +191,7 @@ public class BinaryTreeDemo2 {
             return;
         }
         if (root.left != null) {
+            //这里的depth可以在递归函数中传入depth+1
             depth++;
             getBottomValue(root.left, depth);
             depth--;

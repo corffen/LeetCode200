@@ -374,6 +374,8 @@ public class BinaryTreeDemo {
         } else if (left == null || right == null || left.val != right.val) {
             return false;
         } else {
+            //这里是简化了写法,应该是左边递归返回outCompare,右边递归返回innerCompare
+            //最终返回二者的&&的结果,所以遍历顺序是左右中,也就是后续遍历.
             return isSymmetric(left.left, right.right) && isSymmetric(left.right, right.left);
         }
     }
@@ -436,18 +438,27 @@ public class BinaryTreeDemo {
         return getDepth(root);
     }
 
+    /**
+     * 因为深度表示的是根节点到叶子节点的距离
+     * 叶子结点表示的是,左右节点都为空,自己不是空
+     * @param root
+     * @return
+     */
     private int getDepth(TreeNode root) {
         if (root == null) {
             return 0;
         }
         int leftHeight = getDepth(root.left);
         int rightHeight = getDepth(root.right);
+        //注意这里,左右左节点是空的话,就返回1+右节点的最小高度
         if (root.left == null && root.right != null) {
             return rightHeight + 1;
         }
+        //同样地,右节点为空,返回左节点的最小高度+1
         if (root.right == null && root.left != null) {
             return leftHeight + 1;
         }
+        //都不为空,才比较绝对值.
         return Math.min(leftHeight, rightHeight) + 1;
     }
 

@@ -82,16 +82,12 @@ public class BinaryTreeDemo4 {
      * 修剪二叉搜索树
      * 1. 确定入参和返回值. 根据题目中的值就好
      * 2. 确定单层逻辑
-     *      2.1 如果遇到空节点,返回null,就好
-     *      2.2 如果当前节点的值小于low,那么就递归调用右边的节点,并返回
-     *      2.3 如果当前节点的值大于high,那么就递归调用,返回左边节点
-     *      2.4 如果当前节点在low-high中间,那么用当前节点的left接收左边的递归返回值
-     *           用当前节点的right接收右边的递归返回值
+     * 2.1 如果遇到空节点,返回null
+     * 2.2 如果当前节点的值小于low,那么就递归调用右边的节点,并返回
+     * 2.3 如果当前节点的值大于high,那么就递归调用,返回左边节点
+     * 2.4 如果当前节点在low-high中间,那么用当前节点的left接收左边的递归返回值
+     * 用当前节点的right接收右边的递归返回值
      * 3. 最后返回root
-     * @param root
-     * @param low
-     * @param high
-     * @return
      */
     public TreeNode trimBST(TreeNode root, int low, int high) {
         if (root == null) {
@@ -106,5 +102,40 @@ public class BinaryTreeDemo4 {
         root.left = trimBST(root.left, low, high);
         root.right = trimBST(root.right, low, high);
         return root;
+    }
+
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBST(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode sortedArrayToBST(int[] nums, int low, int high) {
+        if (low > high) {
+            return null;
+        }
+        int mid = low + (high - low) / 2;//注意这里不能用>>1 如果用的话,可以用(low+high)>>1;
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = sortedArrayToBST(nums, low, mid - 1);
+        node.right = sortedArrayToBST(nums, mid + 1, high);
+        return node;
+    }
+
+    /**
+     * 累加树是使得每个节点的值是原来的节点值加上所有大于它的节点值之和。
+     */
+    public TreeNode convertBST(TreeNode root) {
+        traversalConvertBST(root);
+        return root;
+    }
+
+    private int sum = 0;
+
+    private void traversalConvertBST(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        traversalConvertBST(root.right);
+        root.val += sum;
+        sum = root.val;
+        traversalConvertBST(root.left);
     }
 }
