@@ -1,8 +1,6 @@
 package com.gordon.backtracking;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BackTrackingDemo {
 
@@ -68,6 +66,7 @@ public class BackTrackingDemo {
 
     /**
      * 电话中的字母组合
+     *
      * @param digits
      * @return
      */
@@ -80,15 +79,151 @@ public class BackTrackingDemo {
     }
 
     private void backtracking(String digits, int index) {
+        //确定终止逻辑
         if (index == digits.length()) {
             letterResult.add(sb.toString());
             return;
         }
+        //单层逻辑怎么写
         String str = numString[digits.charAt(index) - '0'];
         for (int i = 0; i < str.length(); i++) {
             sb.append(str.charAt(i));
+            //递归调用逻辑
             backtracking(digits, index + 1);
             sb.deleteCharAt(sb.length() - 1);
         }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<Integer> path = new ArrayList<Integer>();
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        backCombinationSum(candidates, target, path, result, 0, 0);
+        return result;
+    }
+
+    private void backCombinationSum(int[] candidates, int target, List<Integer> path, List<List<Integer>> res, int sum, int idx) {
+        if (sum == target) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = idx; i < candidates.length; i++) {
+            if (sum + candidates[i] > target) {
+                break;
+            }
+            path.add(candidates[i]);
+            backCombinationSum(candidates, target, path, res, sum + candidates[i], i);
+            path.remove(path.size() - 1);
+        }
+    }
+
+    private List<List<String>> resultPartitions = new ArrayList<List<String>>();
+    private Deque<String> deque = new ArrayDeque<String>();
+
+    public List<List<String>> partition(String s) {
+        backtrackingPartition(s, 0);
+        return resultPartitions;
+    }
+
+    /**
+     * 将字符串切割成所有的回文字符串
+     *
+     * @param s
+     * @param startIndex
+     */
+    private void backtrackingPartition(String s, int startIndex) {
+        if (startIndex >= s.length()) {
+            resultPartitions.add(new ArrayList<>(deque));
+            return;
+        }
+        for (int i = startIndex; i < s.length(); i++) {
+            if (isPalindrome(s, startIndex, i)) {
+                deque.add(s.substring(startIndex, i + 1));
+            } else {
+                continue;
+            }
+            backtrackingPartition(s, i + 1);
+            deque.removeLast();
+        }
+    }
+
+    private boolean isPalindrome(String s, int start, int end) {
+        for (int i = start, j = end; i < j; i++, j--) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    List<String> ips = new ArrayList<String>();
+
+    public List<String> restoreIpAddresses(String s) {
+        if (s == null || s.length() > 12) {
+            return ips;
+        }
+        backtrackIps(s, 0, 0);
+        return ips;
+    }
+
+    private void backtrackIps(String s, int startIndex, int num) {
+        if (num == 3) {
+            if (isValidIp(s, startIndex, s.length() - 1)) {
+                ips.add(s);
+            }
+            return;
+        }
+        for (int i = startIndex; i < s.length(); i++) {
+            if (isValidIp(s, startIndex, i)) {
+                s = s.substring(0, i + 1) + "." + s.substring(i + 1);
+                num++;
+                backtrackIps(s,i+2,num);
+                num--;
+                s = s.substring(0, i + 1) + s.substring(i + 2);
+            }else {
+                break;
+            }
+        }
+    }
+
+    private boolean isValidIp(String s, int start, int end) {
+        if (start > end) {
+            return false;
+        }
+        if (s.startsWith("0") && start != end) {
+            return false;
+        }
+        int num = 0;
+        for (int i = start; i < end; i++) {
+            if (s.charAt(i) < '0' || s.charAt(i) > '9') {
+                return false;
+            }
+            num+= 10*num+(s.charAt(i)-'0');
+            if (num > 255) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<List<Integer>> subResults = new ArrayList<>();
+    private ArrayDeque<Integer> subPath = new ArrayDeque<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        subsetsHelper(nums,0);
+        return subResults;
+    }
+    private void subsetsHelper(int[] nums,int startIndex){
+        subResults.add(new ArrayList<Integer>(subPath));
+        for (int i = startIndex; i < nums.length; i++) {
+            subPath.add(nums[i]);
+            subsetsHelper(nums,i+1);
+            subPath.removeLast();
+        }
+    }
+
+    public static void main(String[] args) {
+        String s = "aab";
+        BackTrackingDemo demo = new BackTrackingDemo();
+        demo.partition(s);
     }
 }
