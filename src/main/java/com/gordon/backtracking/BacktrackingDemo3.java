@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class BacktrackingDemo3 {
 
     private final List<List<Integer>> result = new ArrayList<List<Integer>>();
@@ -97,6 +96,33 @@ public class BacktrackingDemo3 {
             backtrackingPermute(nums, used);
             permutePath.remove(permutePath.size() - 1);
             used[i] = false;
+        }
+    }
+
+    private List<List<Integer>> permuteResults3 = new ArrayList<List<Integer>>();
+    private ArrayList<Integer> permutePath3 = new ArrayList<>();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        boolean[] used = new boolean[nums.length];
+        backtrackingPermute3(nums, used);
+        return permuteResults;
+    }
+
+    private void backtrackingPermute3(int[] nums,boolean[] used){
+        if (permutePath3.size() == nums.length) {
+            permuteResults3.add(new ArrayList<>(permutePath3));
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i - 1] == nums[i] && !used[i - 1]) {
+                continue;
+            }
+            if (!used[i]) {
+                used[i] =true;
+                permutePath3.add(nums[i]);
+                backtrackingPermute3(nums,used);
+                permutePath3.remove(permutePath3.size() - 1);
+                used[i] = false;
+            }
         }
     }
 }
