@@ -36,4 +36,56 @@ public class backtrackingDemo4 {
         }
         return false;
     }
+
+    List<List<String>> ans = new ArrayList<>();
+
+    public List<List<String>> solveNQueens(int n) {
+        char[][] chessboard = new char[n][n];
+        for (char[] c : chessboard) {
+            Arrays.fill(c, '.');
+        }
+        backTrack(n, 0, chessboard);
+        return ans;
+    }
+
+    private void backTrack(int n, int row, char[][] chessboard) {
+        if (row == n) {
+            ans.add(Array2List(chessboard));
+            return;
+        }
+        for (int colum = 0; colum < n; colum++) {
+            if (isValid(n, row, colum, chessboard)) {
+                chessboard[row][colum] = 'Q';
+                backTrack(n, row + 1, chessboard);
+                chessboard[row][colum] = '.';
+            }
+        }
+    }
+
+    private boolean isValid(int n, int row, int colum, char[][] chessboard) {
+        for (int i = 0; i < row; i++) {
+            if (chessboard[i][colum] == 'Q') {
+                return false;
+            }
+        }
+        for (int i = row - 1, j = colum - 1; i >= 0 && j >= 0; i--, j--) {
+            if (chessboard[i][j] == 'Q') {
+                return false;
+            }
+        }
+        for (int i = row - 1, j = colum + 1; i >= 0 && j < n; i--, j++) {
+            if (chessboard[i][j] == 'Q') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<String> Array2List(char[][] chessboard) {
+        ArrayList<String> result = new ArrayList<>();
+        for (char[] chars : chessboard) {
+            result.add(String.copyValueOf(chars));
+        }
+        return result;
+    }
 }
