@@ -48,4 +48,26 @@ public class GreedyDemo {
         }
         return result;
     }
+
+    /**
+     * 最大子数组和
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+        int length = nums.length;
+        if (length == 1) {
+            return nums[0];
+        }
+        int result = Integer.MIN_VALUE;
+        int count = 0;
+        for (int i = 0; i < length; i++) {
+            count += nums[i];
+            result = Math.max(result, count);
+            if (count < 0) {
+                count=0;
+            }
+        }
+        return result;
+    }
 }
