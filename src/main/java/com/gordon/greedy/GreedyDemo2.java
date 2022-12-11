@@ -1,5 +1,9 @@
 package com.gordon.greedy;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.stream.IntStream;
+
 public class GreedyDemo2 {
 
     /**
@@ -45,4 +49,80 @@ public class GreedyDemo2 {
         }
         return false;
     }
+
+    /**
+     * https://leetcode.cn/problems/jump-game-ii/
+     * 45. 跳跃游戏 II
+     * 最小步数
+     * @param nums
+     * @return
+     */
+    public int jump(int[] nums) {
+        int len = nums.length;
+        if (len == 1) {
+            return 0;
+        }
+        int curDistance = 0;
+        int ans = 0;
+        int nextDistance = 0;
+        for (int i = 0; i < len; i++) {
+            nextDistance = Math.max(nextDistance, i + nums[i]);
+            if (i == curDistance) {
+                if (curDistance != len - 1) {
+                    ans++;
+                    curDistance = nextDistance;
+                    if (nextDistance >= len - 1) {
+                        break;
+                    }
+                }else {
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * https://leetcode.cn/problems/maximize-sum-of-array-after-k-negations/
+     * 1005. K 次取反后最大化的数组和
+     *
+     * 思路: 1.对数组按照绝对值的大小,降序排序
+     * 2. 如果当前的数是负值,就改变为正的.(如果k还大于0的话)
+     * 3. 遍历完数组后,如果k为奇数,说明数组中所有的数据都是正数了,就把最后一个数变成负数
+     * 4. 把所有的数据都累加起来,就是最终答案.
+     *
+     * 贪心思路:
+     * 1. 遇到绝对值大的负数就变成正数. 直到k用完
+     * 2. 所有的数都是正数的,就把最小的正数变成负数
+     *
+     * 额外知识点: Arrays.sort(nums,compartor),这里的nums必须是对象类型的数组,才能使用
+     * 所以可以用 IntStream.of(nums)
+     * .boxed()
+     * .sorted(compartor)
+     * .mapToInt(Integer::intValue)
+     * .toArray();
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        nums = IntStream.of(nums)
+                .boxed()
+                .sorted((o1, o2) -> Math.abs(o2)-Math.abs(o1))
+                .mapToInt(Integer::intValue)
+                .toArray();
+        int len = nums.length;
+        for (int i = 0; i < len ; i++) {
+            if (nums[i] < 0 && k > 0) {
+                k--;
+                nums[i]*=-1;
+            }
+        }
+        if (k % 2 == 1) {
+            nums[len-1]*=-1;
+        }
+        return Arrays.stream(nums).sum();
+    }
+
 }
