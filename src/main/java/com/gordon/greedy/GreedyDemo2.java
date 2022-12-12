@@ -1,7 +1,6 @@
 package com.gordon.greedy;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.stream.IntStream;
 
 public class GreedyDemo2 {
@@ -123,6 +122,38 @@ public class GreedyDemo2 {
             nums[len-1]*=-1;
         }
         return Arrays.stream(nums).sum();
+    }
+
+    /**
+     * https://leetcode.cn/problems/gas-station/
+     * 134. 加油站
+     *
+     * 思路:
+     * 1. 每个加油站的剩余量rest[i]为gas[i] - cost[i]。
+     *
+     * i从0开始累加rest[i]，和记为curSum，一旦curSum小于零，说明[0, i]区间都不能作为起始位置，
+     * 起始位置从i+1算起，再从0计算curSum。等遍历完,start就是最终的起点位置.
+     * 2. 如果遍历完之后,totalSum< 0 ,说明从哪里都不能完成 就返回-1.
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int curSum = 0;
+        int totalSum = 0;
+        int start = 0;
+        for (int i = 0,len = gas.length; i < len; i++) {
+            curSum += gas[i] - cost[i];
+            totalSum += gas[i] - cost[i];
+            if (curSum < 0) {
+                start = i+1;
+                curSum = 0;
+            }
+        }
+        if (totalSum < 0) {
+            return -1;
+        }
+        return start;
     }
 
 }
