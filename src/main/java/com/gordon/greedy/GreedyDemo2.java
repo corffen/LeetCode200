@@ -5,6 +5,12 @@ import java.util.stream.IntStream;
 
 public class GreedyDemo2 {
 
+    public static void main(String[] args) {
+        GreedyDemo2 demo = new GreedyDemo2();
+        int[] array = {1,0,2};
+        demo.candy(array);
+    }
+
     /**
      * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/
      *  买卖股票的最佳时机 II
@@ -154,6 +160,29 @@ public class GreedyDemo2 {
             return -1;
         }
         return start;
+    }
+
+    /**
+     * https://leetcode.cn/problems/candy/
+     * 135. 分发糖果
+     * @param ratings
+     * @return
+     */
+    public int candy(int[] ratings) {
+        int len = ratings.length;
+        int[] array = new int[len];
+        Arrays.fill(array,1);
+        for (int i = 1; i < len ; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                array[i] = array[i-1]+1;
+            }
+        }
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                array[i] = Math.max(array[i], array[i + 1] + 1);
+            }
+        }
+        return Arrays.stream(array).sum();
     }
 
 }
