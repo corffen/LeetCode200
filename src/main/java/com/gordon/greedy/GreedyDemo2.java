@@ -1,6 +1,7 @@
 package com.gordon.greedy;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.stream.IntStream;
 
 public class GreedyDemo2 {
@@ -218,5 +219,34 @@ public class GreedyDemo2 {
             }
         }
         return true;
+    }
+
+    /**
+     * https://leetcode.cn/problems/queue-reconstruction-by-height/
+     * 406. 根据身高重建队列
+     *
+     * 思路:
+     * 1. 按身高h从大到小排序,如果身高相同,就按照第二个元素的升序排列
+     * 2. 用链表不断的插入元素
+     * 3. 插入的规则是,位置为排完序的元素的k值,插入的值是当前元素
+     * 4. 元素插入完,就是最后的答案
+     *
+     * tips: 二维数组的排序,用lambda
+     * linkedList转为数组,调用toArray方法就好,传入一个数组
+     * @param people
+     * @return
+     */
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people,(a,b)->{
+            if (a[0]==b[0]){
+                return Integer.compare(a[1],b[1]);
+            }
+            return Integer.compare(b[0],a[0]);
+        });
+        LinkedList<int[]> queue = new LinkedList<int[]>();
+        for (int[] p : people) {
+            queue.add(p[1], p);
+        }
+        return queue.toArray(new int[people.length][]);
     }
 }
