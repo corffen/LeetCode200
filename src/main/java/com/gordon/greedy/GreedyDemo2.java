@@ -90,6 +90,24 @@ public class GreedyDemo2 {
         return ans;
     }
 
+    public int jump2(int[] nums) {
+        int len = nums.length;
+        if (len == 1) {
+            return 0;
+        }
+        int curDistance = 0;
+        int ans = 0;
+        int nextDistance = 0;
+        for (int i = 0; i < len-1; i++) {
+            nextDistance = Math.max(nextDistance, i + nums[i]);
+            if (i == curDistance) {
+                curDistance = nextDistance;
+                ans++;
+            }
+        }
+        return ans;
+    }
+
     /**
      * https://leetcode.cn/problems/maximize-sum-of-array-after-k-negations/
      * 1005. K 次取反后最大化的数组和
@@ -169,6 +187,10 @@ public class GreedyDemo2 {
     /**
      * https://leetcode.cn/problems/candy/
      * 135. 分发糖果
+     * 1. 首先声明一个数组给每人分配一个糖果
+     * 2. 正序遍历,如果后面的比前面的大,就把当前的值加一
+     * 3. 然后再逆序遍历,如果前面的值比前一个大,就取当前值与后一个值的较大值
+     * 4. 最后累加数组求和
      *
      * @param ratings
      * @return
@@ -193,7 +215,14 @@ public class GreedyDemo2 {
     /**
      * https://leetcode.cn/problems/lemonade-change/
      * 860. 柠檬水找零
-     *
+     * 思路:金币只有三种 5,10,20
+     * 遍历数组,如果碰到5,就把金币5的数量加一
+     * 如果碰到10,就把十的数量加一
+     * 如果碰到20
+     *      如果当前10>0,就把金币10减一,金币5也减一
+     *      否则金币5减三
+     * 当前层,如果金币5的数量小于0或者10的数量小于0 说明不够找零.返回false
+     * 遍历完,说明可以执行完,就返回true
      * @param bills
      * @return
      */
@@ -221,32 +250,5 @@ public class GreedyDemo2 {
         return true;
     }
 
-    /**
-     * https://leetcode.cn/problems/queue-reconstruction-by-height/
-     * 406. 根据身高重建队列
-     *
-     * 思路:
-     * 1. 按身高h从大到小排序,如果身高相同,就按照第二个元素的升序排列
-     * 2. 用链表不断的插入元素
-     * 3. 插入的规则是,位置为排完序的元素的k值,插入的值是当前元素
-     * 4. 元素插入完,就是最后的答案
-     *
-     * tips: 二维数组的排序,用lambda
-     * linkedList转为数组,调用toArray方法就好,传入一个数组
-     * @param people
-     * @return
-     */
-    public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people,(a,b)->{
-            if (a[0]==b[0]){
-                return Integer.compare(a[1],b[1]);
-            }
-            return Integer.compare(b[0],a[0]);
-        });
-        LinkedList<int[]> queue = new LinkedList<int[]>();
-        for (int[] p : people) {
-            queue.add(p[1], p);
-        }
-        return queue.toArray(new int[people.length][]);
-    }
+
 }
