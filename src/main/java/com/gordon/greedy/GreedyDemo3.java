@@ -5,6 +5,7 @@ import com.gordon.utils.LogUtils;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GreedyDemo3 {
 
@@ -100,5 +101,34 @@ public class GreedyDemo3 {
             }
         }
         return len - count;
+    }
+
+    /**
+     * https://leetcode.cn/problems/partition-labels/
+     * 763. 划分字母区间
+     * 思路:
+     * 1. 首先统计每个字符所在的最远位置
+     * 2. 用一个right来记录当前遍历过程中的最远位置
+     * 3. 如果i等于right,说明已经到达分隔的最远位置了.将分隔的位置添加进来,并更新上次的左边界
+     *
+     * @param s
+     * @return
+     */
+    public List<Integer> partitionLabels(String s) {
+        int[] hash = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            hash[s.charAt(i)-'a'] = i;
+        }
+        List<Integer> list = new LinkedList<>();
+        int left = -1;
+        int right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            right = Math.max(right, hash[s.charAt(i) - 'a']);
+            if (i == right) {
+                list.add(i-left);
+                left = i;
+            }
+        }
+        return list;
     }
 }
