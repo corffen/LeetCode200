@@ -5,6 +5,7 @@ import com.gordon.utils.LogUtils;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GreedyDemo3 {
 
@@ -70,17 +71,18 @@ public class GreedyDemo3 {
     }
 
     /**
-     * https://leetcode.cn/problems/non-overlapping-intervals/
+     * <a href="https://leetcode.cn/problems/non-overlapping-intervals/">...</a>
      * 435. 无重叠区间
      * <p>
      * 思路:
      * 1. 首先需要对数组进行排序,按照每个元素的右边界进行从小到大排序
-     * 2. 然后统计不想交的个数
-     * 3. 最后用总的数量减去不想交的个数,就是需要删除的个数
+     * 2. 然后统计不相交的个数
+     * 3. 最后用总的数量减去不相交的个数,就是需要删除的个数
      * <p>
-     * 不想交的个数,是如何统计的呢?  如果当前结束的边界<=当前遍历元素的左边界
-     * 说明不想交,此时不想交的个数自增,同时更新右边界为当前元素的右边界
-     *
+     * 不相交的个数,是如何统计的呢?  如果当前结束的边界<=当前遍历元素的左边界
+     * 说明不相交,此时不相交的个数自增,同时更新右边界为当前元素的右边界
+     * 注意： 这里是按照右边界进行排序的
+     * 统计count记录的是不相交的个数
      * @param intervals
      * @return
      */
@@ -100,5 +102,58 @@ public class GreedyDemo3 {
             }
         }
         return len - count;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/partition-labels/">...</a>
+     * 763. 划分字母区间
+     * 思路:
+     * 1. 首先统计每个字符所在的最远位置
+     * 2. 用一个right来记录当前遍历过程中的最远位置
+     * 3. 如果i等于right,说明已经到达分隔的最远位置了.将分隔的位置添加进来,并更新上次的左边界
+     *
+     * @param s
+     * @return
+     */
+    public List<Integer> partitionLabels(String s) {
+        int[] hash = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            hash[s.charAt(i)-'a'] = i;
+        }
+        List<Integer> list = new LinkedList<>();
+        int left = -1;
+        int right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            right = Math.max(right, hash[s.charAt(i) - 'a']);
+            if (i == right) {
+                list.add(i-left);
+                left = i;
+            }
+        }
+        return list;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/merge-intervals/">...</a>
+     * 56. 合并区间
+     * @param intervals
+     * @return
+     */
+    public int[][] merge(int[][] intervals) {
+        LinkedList<int[]> res = new LinkedList<>();
+        Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] > end) {
+                res.add(new int[]{start, end});
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }else {
+                end = Math.max(end,intervals[i][1]);
+            }
+        }
+        res.add(new int[]{start, end});
+        return res.toArray(new int[res.size()][]);
     }
 }
