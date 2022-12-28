@@ -33,7 +33,7 @@ public class TwoPointDemo {
     }
 
     /**
-     * %20用替换字符串中的空格
+     * %20脫脙脤忙禄禄脳脰路没麓庐脰脨碌脛驴脮赂帽
      *
      * @param s
      * @return
@@ -68,9 +68,9 @@ public class TwoPointDemo {
 
 
     /**
-     * 1. 去除两边的空格,单词中间的空格保持一个
-     * 2. 翻转整个字符串 用双指针
-     * 3. 翻转每个单词  用双指针(start从0开始,end指向空格 然后start=end+1,end=start+1,然后计算end的下一次位置)
+     * 1. 脠楼鲁媒脕陆卤脽碌脛驴脮赂帽,碌楼麓脢脰脨录盲碌脛驴脮赂帽卤拢鲁脰脪禄赂枚
+     * 2. 路颅脳陋脮没赂枚脳脰路没麓庐 脫脙脣芦脰赂脮毛
+     * 3. 路颅脳陋脙驴赂枚碌楼麓脢  脫脙脣芦脰赂脮毛(start麓脫0驴陋脢录,end脰赂脧貌驴脮赂帽 脠禄潞贸start=end+1,end=start+1,脠禄潞贸录脝脣茫end碌脛脧脗脪禄麓脦脦禄脰脙)
      *
      * @param s
      * @return

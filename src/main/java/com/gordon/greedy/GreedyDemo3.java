@@ -118,7 +118,7 @@ public class GreedyDemo3 {
     public List<Integer> partitionLabels(String s) {
         int[] hash = new int[26];
         for (int i = 0; i < s.length(); i++) {
-            hash[s.charAt(i)-'a'] = i;
+            hash[s.charAt(i) - 'a'] = i;
         }
         List<Integer> list = new LinkedList<>();
         int left = -1;
@@ -126,7 +126,7 @@ public class GreedyDemo3 {
         for (int i = 0; i < s.length(); i++) {
             right = Math.max(right, hash[s.charAt(i) - 'a']);
             if (i == right) {
-                list.add(i-left);
+                list.add(i - left);
                 left = i;
             }
         }
@@ -156,4 +156,5 @@ public class GreedyDemo3 {
         res.add(new int[]{start, end});
         return res.toArray(new int[res.size()][]);
     }
+
 }

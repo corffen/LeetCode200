@@ -2,29 +2,28 @@ package com.gordon.greedy;
 
 public class GreedyDemo4 {
     /**
-     * <a href="https://leetcode.cn/problems/monotone-increasing-digits/">单调递增的数字</a>
-     * 738. 单调递增的数字
+     * <a href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">...</a>
+     * 714. 买卖股票的最佳时机含手续费
+     *
      * 思路:
-     * 1. 首先将数字转成字符串,然后转成字符串组
-     * 2. 从后往前遍历,如果当前值比后一个值大,说明不是递增的,就把第i个元素减一,同时更新记录这个位置start
-     * 3.遍历完之后,从start到字符串结尾,要把每一位都变成9
-     * 4.最后将字符串转成int. 这里现将字符串组转成string,然后调用integer.parse方法.
-     * @param n 给定的数字
+     *  1. 用min用来记录最低的历史价格
+     *  2. 当当前的价格-min-fee >0时,说明有利润,就累加起来
+     *  3. 同时修改当前卖出后的最低历史价格为当前的价格-fee.
+     *  4. 3步骤确定了,最低历史价格从卖出的那一刻开始重新记录
+     * @param prices
+     * @param fee
      * @return
      */
-    public int monotoneIncreasingDigits(int n) {
-        String s = String.valueOf(n);
-        char[] chars = s.toCharArray();
-        int start = s.length();
-        for (int i = chars.length - 2; i >= 0; i--) {
-           if (chars[i]>chars[i+1]){
-               chars[i] -=1;
-               start = i+1;
-           }
+    public int maxProfit(int[] prices, int fee) {
+        int ans = 0;
+        int min = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i]<min) min = prices[i];
+            if (prices[i]>min+fee){
+                ans+=prices[i]-min-fee;
+                min = prices[i]-fee;
+            }
         }
-        for (int i = start; i < s.length(); i++) {
-            chars[i] = '9';
-        }
-        return Integer.parseInt(String.valueOf(chars));
+        return ans;
     }
 }
