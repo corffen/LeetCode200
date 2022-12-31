@@ -124,4 +124,22 @@ public class DpDemo {
         return dp[n];
     }
 
+    /**
+     * 贪心算法,分成n个3相乘,再乘以剩下的数字
+     * @param n
+     * @return
+     */
+    public int integerBreak2(int n) {
+        if (n == 2) return 1;
+        if (n == 3) return 2;
+        if (n == 4) return 4;
+        int result = 1;
+        while (n > 4) {
+            result*=3;
+            n-=3;
+        }
+        result*=n;
+        return result;
+    }
+
 }
