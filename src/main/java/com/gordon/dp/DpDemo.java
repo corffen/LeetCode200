@@ -94,4 +94,34 @@ public class DpDemo {
         }
         return dp[m - 1][n - 1];
     }
+
+    /**
+     * <a href="https://leetcode.cn/problems/integer-break/description/">343. 整数拆分</a>
+     *
+     * 思路:
+     * 1. 明确dp含义, 假定dp[i] 表示第i个数字,所能拆分的最大值
+     * 2. 确认dp状态转移方程. dp[i]所表达的就是 (i-j)*j,与dp[i-j]*j 中的较大值
+     *      其中的j表示的是拆分的数字,它的最大值为i的一半.
+     *      (i-j)*j可以认为是拆分成两个数字,所表示的乘积值. 而dp[i-j]表示的是(i-j)拆分的最大值,然后再乘以j
+     * 3. 明确初始值. dp[2] = 1
+     * 4. 确定遍历过程  从第三个数开始遍历. 用不到dp[0]和dp[1]
+     * 5. 检查dp数组,可以打印出来,看看和推导出来的是不是一样的.
+     *
+     * tips:j遍历时,采取的最大值是 i/2. 注意这里可以等于
+     * i是从3开始遍历的.
+     *
+     * @param n
+     * @return
+     */
+    public int integerBreak(int n) {
+        int[] dp = new int[n + 1];
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++) {
+            for (int j = 1; j <= i / 2; j++) {
+                dp[i] = Math.max(dp[i], Math.max(j * (i - j), dp[i - j] * j));
+            }
+        }
+        return dp[n];
+    }
+
 }
