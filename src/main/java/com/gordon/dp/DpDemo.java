@@ -142,4 +142,29 @@ public class DpDemo {
         return result;
     }
 
+    /**
+     * <a href="https://leetcode.cn/problems/unique-binary-search-trees/">96. 不同的二叉搜索树</a>
+     *  思路:
+     *   1. 定义dp[i]为 从1到i,可以组成的二叉树种数
+     *   2. 很明显dp[1] =1 ,dp[2] = 2.
+     *   3. 对于dp[3]而言,如果以1位头结点. 那么有2种.
+     *   以2为头结点,结果是左子树是1,右子树是3. 结果有1种
+     *   以3为头结点,结果是2种.
+     *   dp[3] = dp[0]*dp[2]+dp[1]*dp[1]+dp[2]*dp[0]
+     *          以1为头结点的左节点数*右节点数+以2为头节点的左节点数*右节点数+以3为头结点的左节点数*右
+     *   dp[i] += dp[j-1]*dp[i-j] j的遍历为内循环,从1到i.
+     * @param n
+     * @return
+     */
+    public int numTrees(int n) {
+        int[] dp = new int[n+1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                dp[i]+= dp[j-1]*dp[i-j];
+            }
+        }
+        return dp[n];
+    }
 }
