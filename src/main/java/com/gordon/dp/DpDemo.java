@@ -1,11 +1,16 @@
 package com.gordon.dp;
 
+import com.gordon.utils.LogUtils;
+
 public class DpDemo {
 
     public static void main(String[] args) {
-        int[] costs = {1, 100, 1, 1, 1, 100, 1, 1, 100, 1};
-        DpDemo demo = new DpDemo();
-        demo.minCostClimbingStairs(costs);
+        int[] costs = {1, 10, 1, 1, 1, 100, 1, 1, 100, 1};
+//        DpDemo demo = new DpDemo();
+//        demo.minCostClimbingStairs(costs);
+        for (int i = 0; i < costs.length && costs[i]!=100; i++) {
+            LogUtils.log("i="+i+" cost="+costs[i]);
+        }
     }
 
     /**
