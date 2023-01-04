@@ -39,4 +39,32 @@ public class DpDemo2 {
         }
         return dp[target] == target;
     }
+
+    /**
+     * <a href="https://leetcode.cn/problems/last-stone-weight-ii/">1049. 最后一块石头的重量 II</a>
+     * 思路: 本题可以转换成0,1背包问题.
+     * 首先物品是stones,重量为stones[i],价值也是stones[i]
+     * dp[j] 表示,背包容量为j所能装的物品的最大价值.对于本题来说就是最大重量.
+     * 本题的背包容量大小是所有石头重量和的一半. 因为要抵消石头,最好是能够装到所有石头和的一半,剩下的石头与之相碰,必然消的也最多.
+     *
+     * dp的五个步骤
+     * 1. 确定dp含义
+     * 2. 确定状态转移方程
+     * 3. 初始化初始值
+     * 4. 确定遍历顺序
+     * 5. 打印日志,观察数据是否与推导的一样
+     * @param stones
+     * @return
+     */
+    public int lastStoneWeightII(int[] stones) {
+        int sum = IntStream.of(stones).sum();
+        int target = sum/2;
+        int[] dp = new int[target+1];
+        for (int stone : stones) {
+            for (int j = target; j >= stone; j--) {
+                dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+            }
+        }
+        return sum-dp[target]-dp[target];
+    }
 }
