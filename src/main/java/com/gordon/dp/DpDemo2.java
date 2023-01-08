@@ -67,4 +67,31 @@ public class DpDemo2 {
         }
         return sum-dp[target]-dp[target];
     }
+
+    /**
+     * <a href="https://leetcode.cn/problems/target-sum/">494. 目标和</a>
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = IntStream.of(nums).sum();
+        int left = (sum+target)>>1;
+        //注意这里必须是绝对值比较,因为target可能是负数
+        if (sum < Math.abs(target)) {
+            return 0;
+        }
+        if ((sum + target) % 2 != 0) {
+            return 0;
+        }
+        if(left<0) left=-left;
+        int[] dp = new int[left + 1];
+        dp[0] = 1;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = left; j >=nums[i] ; j--) {
+                dp[j] += dp[j - nums[i]];
+            }
+        }
+        return dp[left];
+    }
 }
