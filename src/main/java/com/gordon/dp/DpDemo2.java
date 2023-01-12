@@ -126,4 +126,30 @@ public class DpDemo2 {
         }
         return dp[m][n];
     }
+
+    /**
+     * <a href="https://leetcode.cn/problems/combination-sum-iv/">组合总和 Ⅳ</a>
+     *
+     * 思路:
+     * 1. 此题其实是排列
+     * 2. 求的是个数所以用动归,如果是求每个组合,只能暴力搜索回溯算法
+     * 3. 动归的排列问题,遍历时是先遍历背包大小,然后遍历物品.
+     * 4. 如果是组合问题,遍历时是先遍历物品然后遍历背包
+     * 5. 初始化问题,默认初始值dp[0] =1
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 0; i <= target; i++) {
+            for (int j = 0; j <nums.length; j++) {
+                if (i >= nums[j]) {
+                    dp[i] += dp[i - nums[j]];
+                }
+            }
+        }
+        return dp[target];
+    }
 }
