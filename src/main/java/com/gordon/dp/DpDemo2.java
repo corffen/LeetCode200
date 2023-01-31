@@ -1,5 +1,7 @@
 package com.gordon.dp;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class DpDemo2 {
@@ -151,5 +153,35 @@ public class DpDemo2 {
             }
         }
         return dp[target];
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/word-break/">139. 单词拆分</a>
+     * 思路: 这可以转换成完全背包问题
+     *  单词列表是物品,字符串是背包.
+     *  从单词列表中任意选取0个或者多个.能否凑成背包s
+     *  动归的五个步骤:
+     *   1. 确定dp数组以及下标的含义.  定义dp[j]表示长度为j的字符串,可以拆分为1个或者多个在字典中出现的单词
+     *   2. 确定递推公式. 如果dp[j] = true. 那么dp[i]为true的条件是[j,i]这个区间的子串出现在字典里
+     *   3.dp数组的初始化  dp[0] = true. 如果为false,后面都为false,就没有意义了.
+     *   4.确定遍历顺序. 求组合数就是先物品在背包. 而排列数是先背包,在物品.  所谓的排列指的是强调物品的顺序.而本题物品必须是有序的
+     *   5.举例推导出dp[i]
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+        HashSet<String> words = new HashSet<String>(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (String word : wordDict) {
+                int len = word.length();
+                if (len <= i && words.contains(s.substring(i - len, i)) && dp[i - len]) {
+                    dp[i] = true;
+                }
+            }
+        }
+        return dp[s.length()];
     }
 }
