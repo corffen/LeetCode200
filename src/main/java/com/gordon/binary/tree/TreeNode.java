@@ -2,7 +2,8 @@ package com.gordon.binary.tree;
 
 public class TreeNode {
     public int val;
-    TreeNode left,right;
+    public TreeNode left;
+    public TreeNode right;
 
     public TreeNode() {
     }
