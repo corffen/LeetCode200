@@ -33,7 +33,7 @@ public class TwoPointDemo {
     }
 
     /**
-     * %20用替换字符串中的空格
+     * %20锟斤拷锟芥换锟街凤拷锟斤拷锟叫的空革拷
      *
      * @param s
      * @return
@@ -68,10 +68,6 @@ public class TwoPointDemo {
 
 
     /**
-     * 1. 去除两边的空格,单词中间的空格保持一个
-     * 2. 翻转整个字符串 用双指针
-     * 3. 翻转每个单词  用双指针(start从0开始,end指向空格 然后start=end+1,end=start+1,然后计算end的下一次位置)
-     *
      * @param s
      * @return
      */
