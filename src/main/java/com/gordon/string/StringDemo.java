@@ -1,5 +1,6 @@
 package com.gordon.string;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class StringDemo {
@@ -91,6 +92,22 @@ public class StringDemo {
         return sb;
     }
 
+    private StringBuilder removeSpace2(String s){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i)!=' '){
+                if (sb.length()>0){
+                    sb.append(' ');
+                }
+                while(i<s.length()&&s.charAt(i)!=' '){
+                    sb.append(s.charAt(i));
+                    i++;
+                }
+            }
+        }
+        return sb;
+    }
+
     /**
      * 反转stringbuilder
      */
@@ -159,6 +176,18 @@ public class StringDemo {
             right--;
         }
         return new String(chars);
+    }
+
+    public String replaceSpace2(String s) {
+        StringBuilder sb = new StringBuilder();
+        for(char c:s.toCharArray()) {
+            if (c == ' ') {
+                sb.append("%20");
+            }else{
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -254,5 +283,40 @@ public class StringDemo {
      */
     public boolean repeatedSubstringPattern(String s) {
         return (s + s).indexOf(s, 1) != s.length();
+    }
+
+    public static String getMaxStr(String s, int max)
+    {
+        StringBuilder sb = new StringBuilder();
+        int length = 0;
+        int needMax = Math.min(s.getBytes(StandardCharsets.UTF_8).length, max);
+        for(int i = 0; i < s.length(); i++)
+        {
+            String c = s.charAt(i)+"";
+            System.out.print(c+"的长度:");
+            int cLen= c.getBytes(StandardCharsets.UTF_8).length;
+            System.out.println(cLen);
+            length+=cLen;
+            sb.append(s.charAt(i));
+            if (length>=needMax){
+                break;
+            }
+        }
+        return sb.toString();
+
+    }
+
+    public static void main(String[] args) {
+//        String s = "abc啊世界!!!";
+//        String ans = getMaxStr(s, 10);
+//        System.out.println(ans);
+
+        String s = "hello world  ";
+        String s1 = "  hello   world  ";
+        StringDemo demo = new StringDemo();
+        String sr =demo.removeSpace2(s).toString();
+        String s1r =demo.removeSpace2(s1).toString();
+        System.out.println(s+",remove space ="+sr);
+        System.out.println(s1+",remove space ="+s1r);
     }
 }

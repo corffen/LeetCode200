@@ -132,29 +132,30 @@ public class ArrayDemo {
     }
 
     public int[][] generateMatrix2(int n) {
-        int loop = 0;
-        int start = 0;
+        int[][] ans = new int[n][n];
+        int loop = 0;//记录循环的次数
+        int start = 0;//记录每次从哪里开始
+        int i =0;//记录数组第几行
+        int j = 0;// 记录数组在第几列
         int count = 1;
-        int i, j;
-        int[][] res = new int[n][n];
-        while (loop++ < n / 2) {
-            for (j = start; j < n - loop; j++) {
-                res[start][j] = count++;
+        while(loop++<n/2){
+            for (j=start; j < n - loop; j++) {
+                ans[start][j] = count++;
             }
-            for (i = start; i < n - loop; i++) {
-                res[i][j] = count++;
+            for (i=start; i < n - loop; i++) {
+                ans[i][j] = count;
             }
-            for (; j >= loop; j--) {
-                res[i][j] = count++;
+            for (; j >=loop; j--) {
+                ans[i][j] = count++;
             }
-            for (; i >= loop; i--) {
-                res[i][j] = count++;
+            for (; i >=loop; i--) {
+                ans[i][j] = count++;
             }
             start++;
         }
-        if (start % 2 == 1) {
-            res[start][start] = count;
+        if ((start & 1) == 1) {
+            ans[start][start] = count;
         }
-        return res;
+        return ans;
     }
 }

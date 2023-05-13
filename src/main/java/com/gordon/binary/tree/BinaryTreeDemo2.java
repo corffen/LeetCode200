@@ -241,13 +241,13 @@ public class BinaryTreeDemo2 {
     }
 
     private TreeNode buildTreeHelper(int[] inorder, int leftStart, int leftEnd, int[] postorder, int rightStart, int rightEnd) {
-        if (leftStart >= leftEnd || rightStart >= rightEnd) {
+        if (leftStart >= leftEnd || rightStart >= rightEnd) { //注意这里是>=
             return null;
         }
-        int rootValue = postorder[rightEnd - 1];
-        int rootIndex = inorderMap.get(rootValue);
-        TreeNode root = new TreeNode(rootValue);
-        int leftLen = rootIndex - leftStart;
+        int rootValue = postorder[rightEnd - 1];//后续遍历的最后一个位置
+        int rootIndex = inorderMap.get(rootValue);//在中序中的位置
+        TreeNode root = new TreeNode(rootValue);//构造根节点
+        int leftLen = rootIndex - leftStart;//计算根节点左边的长度
         root.left = buildTreeHelper(inorder, leftStart, rootIndex, postorder, rightStart, rightStart + leftLen);
         root.right = buildTreeHelper(inorder, rootIndex + 1, leftEnd, postorder, rightStart + leftLen, rightEnd - 1);
         return root;
@@ -260,9 +260,6 @@ public class BinaryTreeDemo2 {
     private TreeNode buildMaxTree(int[] nums, int left, int right) {
         if (left >= right) {
             return null;
-        }
-        if (left + 1 == right) {
-            return new TreeNode(nums[left]);
         }
         int maxIndex = left;
         int max = nums[maxIndex];

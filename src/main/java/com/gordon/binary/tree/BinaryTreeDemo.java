@@ -326,7 +326,7 @@ public class BinaryTreeDemo {
         if (root == null) {
             return root;
         }
-        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
             int size = queue.size();

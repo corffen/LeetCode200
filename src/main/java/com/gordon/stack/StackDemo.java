@@ -114,13 +114,9 @@ public class StackDemo {
         }
         PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(p -> p[1]));
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (pq.size() < k) {
-                pq.add(new int[]{entry.getKey(), entry.getValue()});
-            } else {
-                if (pq.peek()[1] < entry.getValue()) {
-                    pq.poll();
-                    pq.add(new int[]{entry.getKey(), entry.getValue()});
-                }
+            pq.add(new int[]{entry.getKey(), entry.getValue()});
+            if (pq.size() > k) {
+                pq.poll();
             }
         }
         int[] result = new int[k];
@@ -129,5 +125,4 @@ public class StackDemo {
         }
         return result;
     }
-
 }
