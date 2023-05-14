@@ -160,4 +160,38 @@ public class BSTDemo {
         root.right = trimBST(root.right, low, high);
         return root;
     }
+
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return buildTreeNode(nums, 0, nums.length);
+    }
+    private TreeNode buildTreeNode(int[] nums,int l,int r){
+        if (l >= r) {
+            return null;
+        }
+        int mid = l +(r-l)/2;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = buildTreeNode(nums, l, mid);
+        root.right = buildTreeNode(nums, mid+1,r);
+        return root;
+    }
+
+    /**
+     * 二叉树转换成累加树
+     * @param root
+     * @return
+     */
+    public TreeNode convertBST(TreeNode root) {
+        traverseBST(root);
+        return root;
+    }
+    private int preTreeNode =0;
+    private void traverseBST(TreeNode root){
+        if (root == null) {
+            return;
+        }
+        traverseBST(root.right);
+        preTreeNode+= root.val;
+        root.val=preTreeNode;
+        traverseBST(root.left);
+    }
 }
