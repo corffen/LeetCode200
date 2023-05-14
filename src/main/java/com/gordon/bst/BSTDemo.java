@@ -104,4 +104,39 @@ public class BSTDemo {
         }
         return root;
     }
+
+    /**
+     * 删除目标节点
+     * @param root
+     * @param key
+     * @return
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        root = tDeleteNode(root, key);
+        return root;
+    }
+    private TreeNode tDeleteNode(TreeNode root,int val){
+        if (root == null) {
+            return null;
+        }
+        if (root.val>val){
+            root.left = tDeleteNode(root.left,val);
+        }else if (root.val<val){
+            root.right = tDeleteNode(root.right,val);
+        }else{
+            if (root.left == null) {
+                return root.right;
+            }
+            if (root.right == null) {
+                return root.left;
+            }
+            TreeNode temp = root.right;
+            while (temp.left != null) {
+                temp = temp.left;
+            }
+            root.val = temp.val;
+            root.right = tDeleteNode(root.right, temp.val);
+        }
+        return root;
+    }
 }
