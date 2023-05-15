@@ -98,6 +98,11 @@ public class BinaryTreeDemo3 {
         return isValidBst(root.left, min, root.val) && isValidBst(root.right, root.val, max);
     }
 
+    /**
+     * 给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。
+     * @param root
+     * @return
+     */
     public int getMinimumDifference(TreeNode root) {
         if (root == null) {
             return 0;
@@ -109,6 +114,10 @@ public class BinaryTreeDemo3 {
     private TreeNode pre;
     private int result = Integer.MAX_VALUE;
 
+    /**
+     * 中序遍历,和上一个节点进行比较,求绝对差值,记录最小的值
+     * @param root 根节点
+     */
     private void traversal(TreeNode root) {
         if (root == null) {
             return;
@@ -123,6 +132,17 @@ public class BinaryTreeDemo3 {
 
     private Map<Integer, Integer> map = new HashMap<>();
 
+    /**
+     * 给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。
+     *
+     * 假定 BST 有如下定义：
+     *
+     * 结点左子树中所含结点的值小于等于当前结点的值
+     * 结点右子树中所含结点的值大于等于当前结点的值
+     * 左子树和右子树都是二叉搜索树
+     * @param root
+     * @return
+     */
     public int[] findMode(TreeNode root) {
         if (root == null) {
             return new int[0];
@@ -188,6 +208,7 @@ public class BinaryTreeDemo3 {
     }
 
     /**
+     * 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
      * 最小公共节点
      * 1. 求最小公共祖先，需要从底向上遍历，那么二叉树，只能通过后序遍历（即：回溯）实现从低向上的遍历方式。
      * <p>

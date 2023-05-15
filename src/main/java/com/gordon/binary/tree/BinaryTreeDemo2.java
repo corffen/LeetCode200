@@ -226,7 +226,9 @@ public class BinaryTreeDemo2 {
         }
         if (root.right != null) {
             boolean right = pathSumHelper(root.right, targetSum);
-            return right;
+            if (right) {
+                return true;
+            }
         }
         return false;
     }
