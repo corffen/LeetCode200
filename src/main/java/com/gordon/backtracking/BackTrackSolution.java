@@ -14,6 +14,9 @@ public class BackTrackSolution {
     private List<List<Integer>> ans = new ArrayList<List<Integer>>();
     private List<Integer> path = new ArrayList<Integer>();
 
+    /**
+     * 从1-n中选出k个数
+     */
     private void backtrack(int n, int k, int startIndex) {
         if (path.size() == k) {
             ans.add(new ArrayList<>(path));

@@ -1,24 +1,15 @@
 package com.gordon;
 
-import java.util.HashMap;
+import com.gordon.utils.Student;
+import com.gordon.utils.StudentUtils;
 
 public class Main {
     public static void main(String[] args) {
-//        int loop = 0;
-//        while (loop++ < 5) {
-//            System.out.println("loop=" + loop);
-//        }
-//        HashMap<String,String> map = new HashMap<String,String>();
-//        Class<? extends HashMap> mapClass = map.getClass();
-        System.out.println("child isAssignable parent:"+(Student.class.isAssignableFrom(Person.class)));
-        System.out.println("parent isAssignable from:"+(Person.class.isAssignableFrom(Student.class)));
+
+        Student s1 = StudentUtils.getStudent();
+        Student s2 = StudentUtils.getStudent();
+        System.out.println("s1: " + s1);
+        System.out.println("s2: " + s2);
     }
 
-    class Person {
-        public String name;
-    }
-
-    class Student extends Person {
-
-    }
 }
