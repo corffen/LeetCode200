@@ -1,6 +1,7 @@
 package com.gordon.backtracking;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BackTrackSolution {
@@ -71,6 +72,7 @@ public class BackTrackSolution {
 
     /**
      * 电话号码中的字母组合中
+     *
      * @param digits
      * @return
      */
@@ -78,7 +80,7 @@ public class BackTrackSolution {
         if (digits == null || digits.length() == 0) {
             return letters;
         }
-        backtrackLetter(digits,0);
+        backtrackLetter(digits, 0);
         return letters;
     }
 
@@ -97,6 +99,29 @@ public class BackTrackSolution {
             //index是同一组数据中的递归获取
             backtrackLetter(digits, index + 1);
             sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        backtrackComSum(candidates, target,0,0);
+        return ans2;
+    }
+
+    private List<List<Integer>> ans2 = new ArrayList<List<Integer>>();
+    private List<Integer> path2 = new ArrayList<>();
+
+    private void backtrackComSum(int[] candidates, int target, int sum, int index) {
+        if (sum == target) {
+            ans2.add(new ArrayList<>(path2));
+            return;
+        }
+        for (int i = index; i < candidates.length && sum + candidates[i] <= target; i++) {
+            path2.add(candidates[i]);
+            sum += candidates[i];
+            backtrackComSum(candidates, target, sum, i);
+            path2.remove(path2.size() - 1);
+            sum -= candidates[i];
         }
     }
 }
