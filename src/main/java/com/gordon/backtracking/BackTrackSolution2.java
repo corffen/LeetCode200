@@ -141,4 +141,23 @@ public class BackTrackSolution2 {
             pathSub.pollLast();
         }
     }
+
+    List<List<Integer>> subsDup = new ArrayList<List<Integer>>();
+    Deque<Integer> pathSubDup = new LinkedList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        btSubDup(nums,0);
+        return subsDup;
+    }
+    private void btSubDup(int[] num,int index){
+        subsDup.add(new ArrayList<>(pathSubDup));
+        for (int i = index; i < num.length; i++) {
+            if (i>index&&num[i-1]==num[i]){
+                continue;
+            }
+            pathSubDup.add(num[i]);
+            btSubDup(num,i+1);
+            pathSubDup.pollLast();
+        }
+    }
 }
