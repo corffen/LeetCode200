@@ -1,8 +1,13 @@
 package com.gordon.greedy;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.stream.IntStream;
+
 public class GreedySolution {
     /**
      * 最大子序列和
+     *
      * @param nums
      * @return
      */
@@ -15,7 +20,7 @@ public class GreedySolution {
         dp[0] = nums[0];
         int result = nums[0];
         for (int i = 1; i < len; i++) {
-            dp[i] = Math.max(dp[i-1]+nums[i],nums[i]);
+            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
             if (dp[i] > result) {
                 result = dp[i];
             }
@@ -26,14 +31,15 @@ public class GreedySolution {
     /**
      * 122. 买卖股票的最佳时机 II
      * 可以多次买卖股票
+     *
      * @param prices
      * @return
      */
     public int maxProfit(int[] prices) {
         int profit = 0;
         for (int i = 1; i < prices.length; i++) {
-            if (prices[i] > prices[i-1]) {
-                profit+=prices[i]-prices[i-1];
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
             }
         }
         return profit;
@@ -62,11 +68,11 @@ public class GreedySolution {
      * 45. 跳跃游戏 II
      * 注意,本题是一定能到达最后一步,要做的是
      * 找到到达最后一步所需要的最小步数.
-     *
+     * <p>
      * 所以每次遍历时,找到当前跳跃所能覆盖的最大距离
      * 如果还没有到达最后一个的前一步,
-     *  当前的i==最大覆盖距离时,就需要把步数+1
-     *  然后更新当前的最大覆盖距离
+     * 当前的i==最大覆盖距离时,就需要把步数+1
+     * 然后更新当前的最大覆盖距离
      */
     public int jump(int[] nums) {
         int step = 0;
@@ -80,5 +86,32 @@ public class GreedySolution {
             }
         }
         return step;
+    }
+
+    /**
+     * 1005. K 次取反后最大化的数组和
+     * 1. 按绝对值大小进行排序
+     * 2. 遍历数组,先把负数变为正数
+     * 3. 如果k>0,就判断是否为奇数,是的话就把最后一位变为负数
+     * 4. 求数组的和
+     * 每一步都是最优,最后的结果也是最优
+     */
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        nums = IntStream.of(nums)
+                .boxed()
+                .sorted((o1, o2) -> Math.abs(o2) - Math.abs(o1))
+                .mapToInt(Integer::intValue)
+                .toArray();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] < 0 && k > 0) {
+                nums[i] *= -1;
+                k--;
+            }
+        }
+        if (k % 2 == 1) {
+            nums[nums.length - 1] = -1 * nums[nums.length - 1];
+        }
+        return IntStream.of(nums).sum();
     }
 }
