@@ -57,4 +57,28 @@ public class GreedySolution {
         }
         return false;
     }
+
+    /**
+     * 45. 跳跃游戏 II
+     * 注意,本题是一定能到达最后一步,要做的是
+     * 找到到达最后一步所需要的最小步数.
+     *
+     * 所以每次遍历时,找到当前跳跃所能覆盖的最大距离
+     * 如果还没有到达最后一个的前一步,
+     *  当前的i==最大覆盖距离时,就需要把步数+1
+     *  然后更新当前的最大覆盖距离
+     */
+    public int jump(int[] nums) {
+        int step = 0;
+        int currDist = 0;
+        int nextDist = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            nextDist = Math.max(nextDist, nums[i] + i);
+            if (i == currDist) {
+                step++;
+                currDist = nextDist;
+            }
+        }
+        return step;
+    }
 }
