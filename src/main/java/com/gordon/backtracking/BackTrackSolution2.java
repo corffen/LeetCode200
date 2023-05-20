@@ -103,7 +103,7 @@ public class BackTrackSolution2 {
         if (l > r) {
             return false;
         }
-        if (s.startsWith("0") && l != r) {
+        if (s.charAt(l) == '0' && l != r) {
             return false;
         }
         int num = 0;
@@ -182,10 +182,10 @@ public class BackTrackSolution2 {
         }
         int[] used = new int[201];
         for (int i = startIndex; i < nums.length; i++) {
-            if (!subPath.isEmpty()&&nums[i]<subPath.get(subPath.size()-1)||used[nums[i]+100]==1) {
+            if (!subPath.isEmpty() && nums[i] < subPath.get(subPath.size() - 1) || used[nums[i] + 100] == 1) {
                 continue;
             }
-            used[nums[i]+100] = 1;//表示递归遍历过
+            used[nums[i] + 100] = 1;//表示递归遍历过
             subPath.add(nums[i]);
             backtrackingFind(nums, i + 1);
             subPath.remove(subPath.size() - 1);
@@ -194,13 +194,14 @@ public class BackTrackSolution2 {
 
     List<List<Integer>> ansPermute = new ArrayList<List<Integer>>();
     Deque<Integer> pathPermute = new ArrayDeque<Integer>();
+
     public List<List<Integer>> permute(int[] nums) {
         int[] used = new int[nums.length];
-        btPermute(nums,used);
+        btPermute(nums, used);
         return ansPermute;
     }
 
-    private void btPermute(int[] num,int[] used){
+    private void btPermute(int[] num, int[] used) {
         if (pathPermute.size() == num.length) {
             ansPermute.add(new ArrayList<>(pathPermute));
         }
@@ -218,6 +219,7 @@ public class BackTrackSolution2 {
 
     /**
      * 重新安排行程
+     *
      * @param tickets
      * @return
      */
@@ -230,7 +232,8 @@ public class BackTrackSolution2 {
 
     private Deque<String> pathTick = new LinkedList<>();
     private List<String> res;
-    private boolean btTicket(List<List<String>> tickets,boolean[] used){
+
+    private boolean btTicket(List<List<String>> tickets, boolean[] used) {
         if (pathTick.size() == tickets.size() + 1) {
             res = new ArrayList<>(pathTick);
             return true;
@@ -267,11 +270,11 @@ public class BackTrackSolution2 {
             return;
         }
         //列每次都是从0到n
-        for (int col = 0;col < n; ++col) {
+        for (int col = 0; col < n; ++col) {
             //判断当前行的,每一列元素,是否符合条件
-            if (isValid (row, col, n, chessboard)) {
+            if (isValid(row, col, n, chessboard)) {
                 chessboard[row][col] = 'Q';
-                backTrack(n, row+1, chessboard);
+                backTrack(n, row + 1, chessboard);
                 chessboard[row][col] = '.';
             }
         }
@@ -290,21 +293,21 @@ public class BackTrackSolution2 {
 
     public boolean isValid(int row, int col, int n, char[][] chessboard) {
         // 检查列
-        for (int i=0; i<row; ++i) { // 相当于剪枝
+        for (int i = 0; i < row; ++i) { // 相当于剪枝
             if (chessboard[i][col] == 'Q') {
                 return false;
             }
         }
 
         // 检查45度对角线
-        for (int i=row-1, j=col-1; i>=0 && j>=0; i--, j--) {
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
             if (chessboard[i][j] == 'Q') {
                 return false;
             }
         }
 
         // 检查135度对角线
-        for (int i=row-1, j=col+1; i>=0 && j<=n-1; i--, j++) {
+        for (int i = row - 1, j = col + 1; i >= 0 && j <= n - 1; i--, j++) {
             if (chessboard[i][j] == 'Q') {
                 return false;
             }
