@@ -38,4 +38,23 @@ public class GreedySolution {
         }
         return profit;
     }
+
+    /**
+     * 55. 跳跃游戏
+     * 当前所在的位置,是其能跳跃的最大距离
+     * 看看能不能从第一个位置,调到最后一个位置
+     */
+    public boolean canJump(int[] nums) {
+        int cover = 0;
+        if (nums.length == 1) {
+            return true;
+        }
+        for (int i = 0; i <= cover; i++) {
+            cover = Math.max(cover, nums[i] + i);
+            if (cover >= nums.length - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
