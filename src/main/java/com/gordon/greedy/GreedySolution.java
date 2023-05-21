@@ -142,4 +142,38 @@ public class GreedySolution {
         }
         return start;
     }
+
+    /**
+     * 135. 分发糖果
+     *
+     * 每个孩子至少一个糖果
+     * 相邻孩子，得分更高的，获取更多的糖果
+     *
+     * 如果相邻孩子评分一样，他的糖果不一定和评分相等的孩子一致，有可能会比他低
+     * 比如 【1，3，2，2，1】 ---》 【1，2，1，2，1】
+     */
+    public int candy(int[] ratings) {
+
+        int[] ans = new int[ratings.length];
+        Arrays.fill(ans,1);
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                ans[i]=ans[i-1]+1;
+            }
+        }
+        for (int i = ratings.length-2;i>=0;i--) {
+            if (ratings[i]>ratings[i+1]){
+                ans[i]= Math.max(ans[i],ans[i+1]+1);
+                System.out.println("i="+i+",ans[i]="+ans[i]);
+            }
+        }
+        System.out.println("ans[]="+Arrays.toString(ans));
+        return IntStream.of(ans).sum();
+    }
+
+    public static void main(String[] args) {
+        GreedySolution solution = new GreedySolution();
+        int[] ratings = {1,3,2,2,1};
+        solution.candy(ratings);
+    }
 }
