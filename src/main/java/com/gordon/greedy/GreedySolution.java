@@ -2,6 +2,8 @@ package com.gordon.greedy;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.stream.IntStream;
 
 public class GreedySolution {
@@ -201,6 +203,27 @@ public class GreedySolution {
             }
         }
         return true;
+    }
+
+    /**
+     * 406. 根据身高重建队列
+     *
+     * 1.对身高进行降序，相等再按位置升序
+     * 2.对队列按照位置进行插入元素
+     * 3.将队列转成数组
+     */
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, (o1, o2) -> {
+            if (o1[0] == o2[0]) {
+                return Integer.compare(o1[1], o2[1]);
+            }
+            return Integer.compare(o2[0],o1[0]);
+        });
+        LinkedList<int[]> queue = new LinkedList<>();
+        for (int[] person : people) {
+            queue.add(person[1], person);
+        }
+        return queue.toArray(new int[people.length][]);
     }
 
     public static void main(String[] args) {
