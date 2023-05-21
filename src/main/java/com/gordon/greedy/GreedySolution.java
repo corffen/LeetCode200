@@ -114,4 +114,32 @@ public class GreedySolution {
         }
         return IntStream.of(nums).sum();
     }
+
+    /**
+     * 134. 加油站
+     * 累加剩余油量
+     * 如果遍历到i，此时累加的剩余量小于0 ，就start = i+1,也就是i之前的都不行。同时将累加的和置为0
+     *
+     * 在用一个totalSum，用于累加所有的剩余油量
+     *
+     * 如果遍历完，totalSum<0说明不存在返回-1
+     * 最后返回start 就是要求得的答案
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int curSum = 0;
+        int totalSum = 0;
+        int start = 0;
+        for (int i = 0; i < gas.length; i++) {
+            curSum += gas[i] - cost[i];
+            totalSum += gas[i] - cost[i];
+            if (curSum < 0) {
+                curSum =0;
+                start = i+1;
+            }
+        }
+        if (totalSum < 0) {
+            return -1;
+        }
+        return start;
+    }
 }
