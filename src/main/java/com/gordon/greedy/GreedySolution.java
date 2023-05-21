@@ -171,6 +171,38 @@ public class GreedySolution {
         return IntStream.of(ans).sum();
     }
 
+    /**
+     * 860. 柠檬水找零
+     *
+     * 只需要维护 5，10币种的个数
+     * 遇到10，就把5减一，10加一  不满足就return false
+     * 遇到20 把10和5各减一，或者单独减去3张5元的   不满足就return false
+     */
+    public boolean lemonadeChange(int[] bills) {
+        int five = 0,ten = 0;
+        for (int bill : bills) {
+            if (bill == 5) {
+                five++;
+            } else if (bill == 10) {
+                if (five <= 0) {
+                    return false;
+                }
+                five--;
+                ten++;
+            } else if (bill == 20) {
+                if (five > 0 && ten > 0) {
+                    five--;
+                    ten--;
+                } else if (five >= 3) {
+                    five -= 3;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         GreedySolution solution = new GreedySolution();
         int[] ratings = {1,3,2,2,1};
