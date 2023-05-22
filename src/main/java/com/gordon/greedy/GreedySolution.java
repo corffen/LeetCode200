@@ -252,4 +252,28 @@ public class GreedySolution {
         return ans;
     }
 
+    /**
+     * 435. 无重叠区间
+     * 1. 按照右边界排序，升序
+     * 2. 从1开始遍历，end记录最小的右边界，如果end小于等于当前节点的左边界
+     * 说明有重叠，那么更新end为当前节点的右边界，并将交叉的个数+1
+     * 3. 用所有的节点个数，减去交叉的个数，就是需要移除的节点个数
+     * @param intervals
+     * @return
+     */
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals == null||intervals.length==0) {
+            return 0;
+        }
+        Arrays.sort(intervals, Comparator.comparingInt(o -> o[1]));
+        int across = 1;
+        int end = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            if (end<= intervals[i][0]){
+                end = intervals[i][1];
+                across++;
+            }
+        }
+        return intervals.length-across;
+    }
 }
