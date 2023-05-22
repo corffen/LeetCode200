@@ -1,9 +1,6 @@
 package com.gordon.greedy;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class GreedySolution {
@@ -231,8 +228,9 @@ public class GreedySolution {
      * 1. 对数组进行左边界升序排序
      * 2.从1开始遍历数组，如果当前的左边界大于上一个气球的有边界， 累加结果
      * 否则，就更新当前气球的右边界为 上一个气球的右边界和当前值的较小值
-     *
+     * <p>
      * 3.返回统计结果
+     *
      * @param points
      * @return
      */
@@ -245,7 +243,7 @@ public class GreedySolution {
         for (int i = 1; i < points.length; i++) {
             if (points[i][0] > points[i - 1][1]) {
                 ans++;
-            }else {
+            } else {
                 points[i][1] = Math.min(points[i][1], points[i - 1][1]);
             }
         }
@@ -258,22 +256,72 @@ public class GreedySolution {
      * 2. 从1开始遍历，end记录最小的右边界，如果end小于等于当前节点的左边界
      * 说明有重叠，那么更新end为当前节点的右边界，并将交叉的个数+1
      * 3. 用所有的节点个数，减去交叉的个数，就是需要移除的节点个数
+     *
      * @param intervals
      * @return
      */
     public int eraseOverlapIntervals(int[][] intervals) {
-        if (intervals == null||intervals.length==0) {
+        if (intervals == null || intervals.length == 0) {
             return 0;
         }
         Arrays.sort(intervals, Comparator.comparingInt(o -> o[1]));
         int across = 1;
         int end = intervals[0][1];
         for (int i = 1; i < intervals.length; i++) {
-            if (end<= intervals[i][0]){
+            if (end <= intervals[i][0]) {
                 end = intervals[i][1];
                 across++;
             }
         }
-        return intervals.length-across;
+        return intervals.length - across;
+    }
+
+    /**
+     * 763. 划分字母区间
+     * 1. 用hash表记录每个字母出现的最晚的位置
+     * 2.遍历数组，更新最远距离
+     * 如果当前的i等于最远距离，就更新left，同时将分割的距离放进结果集中
+     */
+    public List<Integer> partitionLabels(String s) {
+        int[] hash = new int[26];
+        char[] charArray = s.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            hash[charArray[i] - 'a'] = i;
+        }
+        List<Integer> ans = new ArrayList<>();
+        int left = 0;
+        int right = 0;
+        for (int i = 0; i < charArray.length; i++) {
+            right = Math.max(right, hash[charArray[i] - 'a']);
+            if (i == right) {
+                ans.add(right - left + 1);
+                left = i + 1;
+            }
+        }
+        return ans;
+    }
+
+    public int[][] merge(int[][] intervals) {
+        LinkedList<int[]> queue = new LinkedList<>();
+        Arrays.sort(intervals, (Comparator.comparingInt(o -> o[0])));
+        queue.add(intervals[0]);
+        for (int i = 1; i < intervals.length; i++) {
+            int[] last = queue.peekLast();//注意这里是取出最后一个，不要用peek方法
+            if (intervals[i][0] > last[1]) {
+                queue.add(intervals[i]);
+            } else {
+                int start = last[0];
+                int end = Math.max(last[1], intervals[i][1]);
+                queue.pollLast();
+                queue.add(new int[]{start, end});
+            }
+        }
+        return queue.toArray(new int[queue.size()][]);
+    }
+
+    public static void main(String[] args) {
+      int[][] intervals = {{2,3},{2,2},{3,3},{1,3},{5,7},{2,2},{4,6}};
+        GreedySolution solution = new GreedySolution();
+        solution.merge(intervals);
     }
 }
