@@ -121,9 +121,9 @@ public class GreedySolution {
      * 134. 加油站
      * 累加剩余油量
      * 如果遍历到i，此时累加的剩余量小于0 ，就start = i+1,也就是i之前的都不行。同时将累加的和置为0
-     *
+     * <p>
      * 在用一个totalSum，用于累加所有的剩余油量
-     *
+     * <p>
      * 如果遍历完，totalSum<0说明不存在返回-1
      * 最后返回start 就是要求得的答案
      */
@@ -135,8 +135,8 @@ public class GreedySolution {
             curSum += gas[i] - cost[i];
             totalSum += gas[i] - cost[i];
             if (curSum < 0) {
-                curSum =0;
-                start = i+1;
+                curSum = 0;
+                start = i + 1;
             }
         }
         if (totalSum < 0) {
@@ -147,41 +147,41 @@ public class GreedySolution {
 
     /**
      * 135. 分发糖果
-     *
+     * <p>
      * 每个孩子至少一个糖果
      * 相邻孩子，得分更高的，获取更多的糖果
-     *
+     * <p>
      * 如果相邻孩子评分一样，他的糖果不一定和评分相等的孩子一致，有可能会比他低
      * 比如 【1，3，2，2，1】 ---》 【1，2，1，2，1】
      */
     public int candy(int[] ratings) {
 
         int[] ans = new int[ratings.length];
-        Arrays.fill(ans,1);
+        Arrays.fill(ans, 1);
         for (int i = 1; i < ratings.length; i++) {
             if (ratings[i] > ratings[i - 1]) {
-                ans[i]=ans[i-1]+1;
+                ans[i] = ans[i - 1] + 1;
             }
         }
-        for (int i = ratings.length-2;i>=0;i--) {
-            if (ratings[i]>ratings[i+1]){
-                ans[i]= Math.max(ans[i],ans[i+1]+1);
-                System.out.println("i="+i+",ans[i]="+ans[i]);
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                ans[i] = Math.max(ans[i], ans[i + 1] + 1);
+                System.out.println("i=" + i + ",ans[i]=" + ans[i]);
             }
         }
-        System.out.println("ans[]="+Arrays.toString(ans));
+        System.out.println("ans[]=" + Arrays.toString(ans));
         return IntStream.of(ans).sum();
     }
 
     /**
      * 860. 柠檬水找零
-     *
+     * <p>
      * 只需要维护 5，10币种的个数
      * 遇到10，就把5减一，10加一  不满足就return false
      * 遇到20 把10和5各减一，或者单独减去3张5元的   不满足就return false
      */
     public boolean lemonadeChange(int[] bills) {
-        int five = 0,ten = 0;
+        int five = 0, ten = 0;
         for (int bill : bills) {
             if (bill == 5) {
                 five++;
@@ -207,7 +207,7 @@ public class GreedySolution {
 
     /**
      * 406. 根据身高重建队列
-     *
+     * <p>
      * 1.对身高进行降序，相等再按位置升序
      * 2.对队列按照位置进行插入元素
      * 3.将队列转成数组
@@ -217,7 +217,7 @@ public class GreedySolution {
             if (o1[0] == o2[0]) {
                 return Integer.compare(o1[1], o2[1]);
             }
-            return Integer.compare(o2[0],o1[0]);
+            return Integer.compare(o2[0], o1[0]);
         });
         LinkedList<int[]> queue = new LinkedList<>();
         for (int[] person : people) {
@@ -226,9 +226,30 @@ public class GreedySolution {
         return queue.toArray(new int[people.length][]);
     }
 
-    public static void main(String[] args) {
-        GreedySolution solution = new GreedySolution();
-        int[] ratings = {1,3,2,2,1};
-        solution.candy(ratings);
+    /**
+     * 452. 用最少数量的箭引爆气球
+     * 1. 对数组进行左边界升序排序
+     * 2.从1开始遍历数组，如果当前的左边界大于上一个气球的有边界， 累加结果
+     * 否则，就更新当前气球的右边界为 上一个气球的右边界和当前值的较小值
+     *
+     * 3.返回统计结果
+     * @param points
+     * @return
+     */
+    public int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+        Arrays.sort(points, Comparator.comparingInt(o -> o[0]));
+        int ans = 1;
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > points[i - 1][1]) {
+                ans++;
+            }else {
+                points[i][1] = Math.min(points[i][1], points[i - 1][1]);
+            }
+        }
+        return ans;
     }
+
 }
