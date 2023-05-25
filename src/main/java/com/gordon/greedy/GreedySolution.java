@@ -319,6 +319,25 @@ public class GreedySolution {
         return queue.toArray(new int[queue.size()][]);
     }
 
+    public int integerBreak(int n) {
+        if (n == 2) {
+            return 1;
+        }
+        if (n == 3) {
+            return 2;
+        }
+        if (n == 4) {
+            return 4;
+        }
+        int res = 1;
+        while (n > 4) {
+            res*=3;
+            n-=3;
+        }
+        res*=n;
+        return res;
+    }
+
     public static void main(String[] args) {
       int[][] intervals = {{2,3},{2,2},{3,3},{1,3},{5,7},{2,2},{4,6}};
         GreedySolution solution = new GreedySolution();
