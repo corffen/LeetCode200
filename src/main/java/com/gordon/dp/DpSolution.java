@@ -119,4 +119,35 @@ public class DpSolution {
         return dp[target] == target;
     }
 
+    /**
+     * 最后一块石头的重量
+     * 用容量为总重量一半的背包尽可能多的装石头，跟上一道题是一样的
+     * 最后sum-dp【target】 是剩余石头的重量，因为target是向下取整，必然有sum-dp[target] >=dp[target]
+     */
+    public int lastStoneWeightII(int[] stones) {
+        int sum = IntStream.of(stones).sum();
+        int target = sum / 2;
+        int[] dp = new int[target + 1];
+        for (int num : stones) {
+            for (int j = target; j >= num; j--) {
+                dp[j] = Math.max(dp[j], dp[j - num] + num);
+            }
+        }
+        return sum-dp[target]-dp[target];
+    }
+
+    /**
+     * ❎❎❎❎❎❎❎❎❎❎
+     * 排序用大的相撞，结果是不对的。
+     * 不能从大到小，依次消除
+     * ❎❎❎❎❎❎❎❎❎❎
+     */
+    public int lastStoneWeightII2(int[] stones) {
+        Arrays.sort(stones);
+        int ans = stones[stones.length - 1];
+        for (int i = stones.length - 2; i >= 0; i--) {
+            ans = Math.abs(stones[i] - ans);
+        }
+        return ans;
+    }
 }
