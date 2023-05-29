@@ -82,6 +82,13 @@ public class DpSolution {
         return dp[n];
     }
 
+    /**
+     * 需要累加j作为根节点的个数,所以j的值是[1-i];
+     * i是从[2-n]
+     * 初始化时,需要初始化dp[0]和dp[1],这里需要注意dp[0]的值必须是1
+     * @param n
+     * @return
+     */
     public int numTrees(int n) {
         int[] dp = new int[n + 1];
         dp[0] = 1;
@@ -109,8 +116,11 @@ public class DpSolution {
         }
         int target = sum / 2;
         int[] dp = new int[target + 1];
+        //先遍历物品
         for (int num : nums) {
+            //再遍历背包
             for (int j = target; j >= num; j--) {
+                //0,1背包递推公式
                 dp[j] = Math.max(dp[j], dp[j - num] + num);
                 System.out.println("dp[" + j + "]=" + dp[j]);
             }
@@ -130,9 +140,11 @@ public class DpSolution {
         int[] dp = new int[target + 1];
         for (int num : stones) {
             for (int j = target; j >= num; j--) {
+                //容量为j的背包,所能容下的最多的石头重量
                 dp[j] = Math.max(dp[j], dp[j - num] + num);
             }
         }
+        //向下取整,sum-dp[target] 就是背包中剩下的重量
         return sum-dp[target]-dp[target];
     }
 
