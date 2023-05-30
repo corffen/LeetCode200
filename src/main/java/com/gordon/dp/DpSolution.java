@@ -162,4 +162,53 @@ public class DpSolution {
         }
         return ans;
     }
+
+    /**
+     * 组合总和,
+     * 这道题是求全排列的(3,1)和(1,3)是两组答案
+     * 对于完全背包来说,就需要先遍历背包
+     * 然后遍历物品
+     * 判断条件是背包的大小大于 物品的大小
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 0; i <= target; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                if (i >= nums[j]) {
+                    dp[i] += dp[i - nums[j]];
+                }
+            }
+        }
+        return dp[target];
+    }
+
+    /**
+     * 零钱兑换
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public int coinChange(int[] coins, int amount) {
+        int max = Integer.MAX_VALUE;
+        int[] dp = new int[amount + 1];
+        //初始化dp数组为最大值
+        Arrays.fill(dp, max);
+        //当金额为0时需要的硬币数目为0
+        dp[0] = 0;
+        for (int coin : coins) {
+            //正序遍历：完全背包每个硬币可以选择多次
+            for (int j = coin; j <= amount; j++) {
+                //只有dp[j-coins[i]]不是初始最大值时，该位才有选择的必要
+                if (dp[j - coin] != max) {
+                    //选择硬币数目最小的情况
+                    dp[j] = Math.min(dp[j], dp[j - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] == max ? -1 : dp[amount];
+    }
 }
