@@ -1,6 +1,8 @@
 package com.gordon.dp;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class DpSolution {
@@ -86,6 +88,7 @@ public class DpSolution {
      * 需要累加j作为根节点的个数,所以j的值是[1-i];
      * i是从[2-n]
      * 初始化时,需要初始化dp[0]和dp[1],这里需要注意dp[0]的值必须是1
+     *
      * @param n
      * @return
      */
@@ -145,7 +148,7 @@ public class DpSolution {
             }
         }
         //向下取整,sum-dp[target] 就是背包中剩下的重量
-        return sum-dp[target]-dp[target];
+        return sum - dp[target] - dp[target];
     }
 
     /**
@@ -169,6 +172,7 @@ public class DpSolution {
      * 对于完全背包来说,就需要先遍历背包
      * 然后遍历物品
      * 判断条件是背包的大小大于 物品的大小
+     *
      * @param nums
      * @param target
      * @return
@@ -188,6 +192,7 @@ public class DpSolution {
 
     /**
      * 零钱兑换
+     *
      * @param coins
      * @param amount
      * @return
@@ -215,19 +220,59 @@ public class DpSolution {
     /**
      * 279. 完全平方数
      * 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
-     *
+     * <p>
      * 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。
      * 例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
      */
     public int numSquares(int n) {
-        int[] dp = new int[n+1];
-        Arrays.fill(dp,Integer.MAX_VALUE);
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
         dp[0] = 0;
         for (int i = 1; i <= n; i++) {
-            for (int j = 1; j*j <= i; j++) {
-                dp[i] = Math.min(dp[i],dp[i-j*j]+1);
+            for (int j = 1; j * j <= i; j++) {
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
             }
         }
         return dp[n];
+    }
+
+    /**
+     * 139. 单词拆分
+     * 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+     * 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length() + 1];
+        HashSet<String> set = new HashSet<>(wordDict);
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                String word = s.substring(j, i);
+                if (set.contains(word) && dp[j]) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+
+    /**
+     * 打家劫舍，相邻元素不能偷
+     * @param nums
+     * @return
+     */
+    public int rob(int[] nums) {
+        int len = nums.length;
+        if (len < 2) {
+            return nums[0];
+        }
+        int[] dp = new int[len];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+        for (int i = 2; i < len; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        }
+        return dp[len - 1];
     }
 }
