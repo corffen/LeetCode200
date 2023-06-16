@@ -218,6 +218,144 @@ public class DpSolution {
     }
 
     /**
+     * 目标和
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = IntStream.of(nums).sum();
+        if (Math.abs(target) > sum) {
+            return 0;
+        }
+        if ((sum + target) % 2 == 1) {
+            return 0;
+        }
+        int ans = (sum + target) / 2;
+        int[] dp = new int[ans + 1];
+        dp[0] = 1;
+        for (int num : nums) {
+            for (int j = ans; j >= num; j--) {
+                dp[j] += dp[j - num];
+            }
+        }
+        return dp[ans];
+    }
+
+    /**
+     * 零钱对换II
+     *
+     * @param amount
+     * @param coins
+     * @return
+     */
+    public int change(int amount, int[] coins) {
+        int[] dp = new int[amount + 1];
+        dp[0] = 1;
+        for (int coin : coins) {
+            for (int j = coin; j <= amount; j++) {
+                dp[j] += dp[j - coin];
+            }
+        }
+        return dp[amount];
+    }
+
+    /**
+     * 300. 最长递增子序列
+     * 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+     * <p>
+     * 子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+     *
+     * @param nums
+     * @return
+     */
+    public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        if (nums.length == 1) {
+            return 1;
+        }
+        Arrays.fill(dp, 1);
+        int ans = 0;
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            ans = Math.max(ans, dp[i]);
+        }
+        return ans;
+    }
+
+    /**
+     * 最长连续子序列
+     * 强调的是连续
+     * 只需要跟前一个值进行比较就可以
+     */
+    public int findLengthOfLCIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        if (nums.length == 1) {
+            return 1;
+        }
+        Arrays.fill(dp, 1);
+        int ans = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                dp[i] = dp[i - 1] + 1;
+            }
+            ans = Math.max(ans, dp[i]);
+        }
+        return ans;
+    }
+
+    /**
+     * 718. 最长重复子数组
+     * 给两个整数数组 nums1 和 nums2 ，返回 两个数组中 公共的 、长度最长的子数组的长度 。
+     * <p>
+     * 思路:
+     * dp[i][j] = 表示以i-1为结尾,nums2以j-1为结尾时,二者的最长的子数组的长度
+     * 那么当nums[i-1]==nums[j-1]时,满足的递推公式为dp[i][j] = dp[i-1][j-1]+1;
+     */
+    public int findLength(int[] nums1, int[] nums2) {
+        int[][] dp = new int[nums1.length + 1][nums2.length + 1];
+        int ans = 0;
+        for (int i = 1; i <= nums1.length; i++) {
+            for (int j = 1; j <= nums2.length; j++) {
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    ans = Math.max(ans, dp[i][j]);
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 1143. 最长公共子序列
+     * 给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。
+     * 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
+     * 思路:
+     * 这题和上一个区别是,这道题的子串不需要连续.
+     * dp[i][j]：长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j]
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        int[][] dp = new int[text1.length() + 1][text2.length() + 1];
+        for (int i = 1; i <= text1.length(); i++) {
+            char c1 = text1.charAt(i - 1);
+            for (int j = 1; j <= text2.length(); j++) {
+                char c2 = text2.charAt(j-1);
+                if (c1 == c2) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[text1.length()][text2.length()];
+    }
+
+    /**
      * 279. 完全平方数
      * 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
      * <p>

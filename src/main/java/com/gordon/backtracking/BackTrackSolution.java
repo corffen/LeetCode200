@@ -5,7 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BackTrackSolution {
-
+    /**
+     * 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+     * @param n
+     * @param k
+     * @return
+     */
     public List<List<Integer>> combine(int n, int k) {
         backtrack(n, k, 1);
         return ans;
@@ -35,6 +40,9 @@ public class BackTrackSolution {
 
     /**
      * 找出k个数,使得他们的值相加之合为n
+     * 多了一个条件就是和为n
+     * 变化的是从1-9这9个数中选择，是固定的
+     * 所以递归条件，需要多加上sum，用于统计路径上的和
      */
     public List<List<Integer>> combinationSum3(int k, int n) {
         backCombine(n, k, 1, 0);
@@ -55,6 +63,7 @@ public class BackTrackSolution {
     private void backCombine(int targetSum, int k, int startIndex, int sum) {
         //回溯的出口
         if (combinePath.size() == k) {
+            //满足条件才将路径添加到结果中去
             if (targetSum == sum) {
                 combineAns.add(new ArrayList<>(combinePath));
             }
@@ -62,10 +71,11 @@ public class BackTrackSolution {
         }
         //遍历条件,递归时纵向遍历,i是横向遍历,
         for (int i = startIndex; i <= 9; i++) {
+            //统计路径上的和
             sum += i;
-            combinePath.add(i);
+            combinePath.add(i);//记录路径上的值
             backCombine(targetSum, k, i + 1, sum);
-            sum -= i;
+            sum -= i; //回溯的条件
             combinePath.remove(combinePath.size() - 1);
         }
     }
@@ -105,6 +115,27 @@ public class BackTrackSolution {
         }
     }
 
+    /**
+     * 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     *
+     * candidates 中的数字可以无限制重复被选取。
+     *
+     * 说明：
+     *
+     * 所有数字（包括 target）都是正整数。
+     * 解集不能包含重复的组合。
+     * 示例 1：
+     *
+     * 输入：candidates = [2,3,6,7], target = 7,
+     * 所求解集为： [ [7], [2,2,3] ]
+     * 示例 2：
+     *
+     * 输入：candidates = [2,3,5], target = 8,
+     * 所求解集为： [ [2,2,2,2], [2,3,3], [3,5] ]
+     * @param candidates
+     * @param target
+     * @return
+     */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
         backtrackComSum(candidates, target,0,0);
