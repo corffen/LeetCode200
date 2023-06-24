@@ -413,4 +413,137 @@ public class DpSolution {
         }
         return dp[len - 1];
     }
+
+    /**
+     * 不相交的线
+     * 其实就是求最长公共子序列,一模一样的解法
+     */
+    public int maxUncrossedLines(int[] nums1, int[] nums2) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int[][] dp = new int[len1 + 1][len2 + 1];
+
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[len1][len2];
+    }
+
+    /**
+     * 53. 最大子数组和
+     * 给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+     *
+     * 子数组 是数组中的一个连续部分。
+     */
+    public static int maxSubArray(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        int res = nums[0];
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
+    /**
+     * 392. 判断子序列
+     * 给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
+     *
+     * 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+     */
+    public boolean isSubsequence(String s, String t) {
+        int len1 = s.length();
+        int len2 = t.length();
+        int[][] dp = new int[len1+1][len2+1];
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }else{
+                    dp[i][j] = dp[i][j - 1];
+                }
+            }
+        }
+        return dp[len1][len2]==len1;
+    }
+
+    public int numDistinct(String s, String t) {
+        int len1 = s.length();
+        int len2 = t.length();
+        int[][] dp = new int[len1+1][len2+1];
+        for (int i = 0; i <= len1; i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    dp[i][j] = dp[i-1][j-1]+dp[i-1][j];
+                }else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
+
+    /**
+     * 583. 两个字符串的删除操作
+     * 给定两个单词 word1 和 word2 ，返回使得 word1 和  word2 相同所需的最小步数。
+     *
+     * 每步 可以删除任意一个字符串中的一个字符。
+     * @param word1
+     * @param word2
+     * @return
+     */
+    public int minDistance(String word1, String word2) {
+        int len1 = word1.length();
+        int len2 = word2.length();
+        int[][] dp = new int[len1 + 1][len2 + 1];
+
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                //最长公共子序列的dp[i][j]表示[0-i-1]的word1 和[0-j-1]的word2 的最大长度
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    //当相等时,长度就加1
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    //不相等时,从上方或者左方 得到.
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return len1 + len2 - dp[len1][len2] * 2;
+    }
+
+    public int minDistance2(String word1, String word2) {
+        int[][] dp = new int[word1.length() + 1][word2.length() + 1];
+        for (int i = 0; i < word1.length() + 1; i++) dp[i][0] = i;
+        for (int j = 0; j < word2.length() + 1; j++) dp[0][j] = j;
+
+        for (int i = 1; i < word1.length() + 1; i++) {
+            for (int j = 1; j < word2.length() + 1; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }else{
+                    dp[i][j] = Math.min(dp[i - 1][j - 1] + 2,
+                            Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1));
+                }
+            }
+        }
+
+        return dp[word1.length()][word2.length()];
+    }
 }
